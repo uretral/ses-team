@@ -174,6 +174,7 @@ class CategoryController extends Controller
         return $form;
     }
 
+
     public function block($alias,$id,$static,$backend = ''){
 
         $block = Block::where('url',$alias)->first();
