@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Block;
+use App\Models\Helper;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -10,7 +10,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
-class BlockController extends Controller
+class HelperController extends Controller
 {
     use HasResourceActions;
 
@@ -79,17 +79,12 @@ class BlockController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new Block);
+        $grid = new Grid(new Helper);
 
         $grid->id('ID');
         $grid->name('Название');
-        $grid->actions(function ($actions) {
-            $g = $actions->row->toArray();
-            if(!$g['no_table']) {
-                $actions->prepend('<a href="/admin/block/'.$g['url'].'"><i class="fa fa-arrow-right"></i></a>&nbsp;&nbsp;&nbsp;');
-            }
-            $actions->disableDelete();
-        });
+        //$grid->intro_img('Превью');
+
         return $grid;
     }
 
@@ -101,7 +96,7 @@ class BlockController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Block::findOrFail($id));
+        $show = new Show(Helper::findOrFail($id));
 
         $show->id('ID');
         $show->created_at('Created at');
@@ -117,21 +112,13 @@ class BlockController extends Controller
      */
     protected function form()
     {
+        $form = new Form(new Helper);
 
-
-
-        $form = new Form(new Block);
-
-        $form->display('ID');
-        $form->text('name','Название блока');
-        $form->text('controller');
-        $form->text('model');
-        $form->text('url');
-        $form->radio('no_table','Без таблицы')->options([0 => 'Нет', 1 => 'Да'])->default(0);
-        $form->radio('static','Статический')->options([0 => 'Нет', 1 => 'Да'])->default(0);
-
-
-
+        $form->tab('Настройки', function($form){
+            $form->display('ID');
+            $form->alias('alias');
+//            $form->select('parent');
+        });
 
 
 

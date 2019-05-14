@@ -488,9 +488,9 @@ class Builder
 
         $attributes['class'] = array_get($options, 'class');
 
-        if ($this->hasFile()) {
+//        if ($this->hasFile()) {
             $attributes['enctype'] = 'multipart/form-data';
-        }
+//        }
 
         $html = [];
         foreach ($attributes as $name => $value) {

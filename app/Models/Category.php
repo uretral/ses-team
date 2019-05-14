@@ -5,6 +5,7 @@ namespace App\Models;
 use Encore\Admin\Traits\AdminBuilder;
 use Encore\Admin\Traits\ModelTreeMenu;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Helper;
 
 class Category extends Model
 {
@@ -32,7 +33,7 @@ class Category extends Model
             'controller' => $class,
             'model' => $block->model,
             'title' => $model->name,
-            'static' => $model->static
+            'static' => $block->static
         );
         $json = $tbl->source;
 
@@ -54,40 +55,43 @@ class Category extends Model
 
     public static function rootSearch($data, $key, &$links = [])
     {
-        if($data[$key]['parent'] == 0) {
-            $links[] = str_replace('//','/','/'.$data[$key]['alias']);
+        if ($data[$key]['parent'] == 0) {
+            $links[] = str_replace('//', '/', '/' . $data[$key]['alias']);
         } else {
-            $links[] = str_replace('//','/','/'.$data[$key]['alias']);
+            $links[] = str_replace('//', '/', '/' . $data[$key]['alias']);
             self::rootSearch($data, $data[$key]['parent'], $links);
         }
         return $links;
     }
+
     public static function root($id)
     {
         $arAlias = self::rootSearch(Category::all()->keyBy('id')->toArray(), $id);
-        return str_replace('//','/',implode('',array_reverse($arAlias)));
+        return str_replace('//', '/', implode('', array_reverse($arAlias)));
     }
-    public static function list(){
+
+    public static function list()
+    {
         $menu = [];
-        foreach (self::all()->toArray() as $i)
-        {
+        foreach (self::all()->toArray() as $i) {
 
             $menu[$i['id']] = $i;
             $menu[$i['id']]['d'] = request()->path();
-            $pos = strpos(request()->getPathInfo(),$i['link']);
-            strpos(request()->getPathInfo(),$i['link']) !== false ? $menu[$i['id']]['active'] = 'active' : $menu[$i['id']]['active'] = '';
+            $pos = strpos(request()->getPathInfo(), $i['link']);
+            strpos(request()->getPathInfo(), $i['link']) !== false ? $menu[$i['id']]['active'] = 'active' : $menu[$i['id']]['active'] = '';
         }
         return $menu;
     }
 
-    public static function item($id){
-        return self::where('id',$id)->first();
+    public static function item($id)
+    {
+        return self::where('id', $id)->first();
     }
-    public static function items(){
+
+    public static function items()
+    {
         return self::all();
     }
-
-
 }
 
 

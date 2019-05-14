@@ -39,8 +39,12 @@ class Sortable extends Field
 
         if($json){
             $val = [];
-            foreach ($json as $j)if($j->title == 0 || $j->model::find($j->id)){
-                $val[] = $j;
+            foreach ($json as $j){
+                if($j->static == 1){
+                    $val[] = $j;
+                } elseif ($j->static == 0 && $j->model::find($j->id)) {
+                    $val[] = $j;
+                }
             }
             Category::where('id',$this->res)->update(['source' => json_encode($val,JSON_UNESCAPED_UNICODE)]);
         }

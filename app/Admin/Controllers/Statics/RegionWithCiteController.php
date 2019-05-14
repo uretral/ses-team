@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Admin\Controllers;
+namespace App\Admin\Controllers\Statics;
 
-use App\Models\Block;
+use App\Models\Statics\RegionWithCite;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -10,7 +10,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
-class BlockController extends Controller
+class RegionWithCiteController extends Controller
 {
     use HasResourceActions;
 
@@ -79,17 +79,12 @@ class BlockController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new Block);
+        $grid = new Grid(new RegionWithCite);
 
         $grid->id('ID');
         $grid->name('Название');
-        $grid->actions(function ($actions) {
-            $g = $actions->row->toArray();
-            if(!$g['no_table']) {
-                $actions->prepend('<a href="/admin/block/'.$g['url'].'"><i class="fa fa-arrow-right"></i></a>&nbsp;&nbsp;&nbsp;');
-            }
-            $actions->disableDelete();
-        });
+        //$grid->intro_img('Превью');
+
         return $grid;
     }
 
@@ -101,7 +96,7 @@ class BlockController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Block::findOrFail($id));
+        $show = new Show(RegionWithCite::findOrFail($id));
 
         $show->id('ID');
         $show->created_at('Created at');
@@ -117,21 +112,28 @@ class BlockController extends Controller
      */
     protected function form()
     {
+        $form = new Form(new RegionWithCite);
 
+        $form->tab('Настройки', function($form){
+            $form->display('ID');
+            $form->alias('alias');
+//            $form->select('parent');
+        });
+        $form->tab('Превью', function($form){
+            $form->text('name','Название')->attribute('rel','alias');
+            $form->image('intro_img','Иконка');
+            $form->textarea('intro','Интро текст');
+        });
+        $form->tab('Контент', function($form){
+            $form->image('detail_img','Картинка');
+            $form->ckeditor('detail','Текст');
+        });
+        $form->tab('SEO', function($form){
+            $form->textarea('seo_title','seo title');
+            $form->textarea('seo_desc','seo description');
+            $form->textarea('seo_key','seo keywords');
 
-
-        $form = new Form(new Block);
-
-        $form->display('ID');
-        $form->text('name','Название блока');
-        $form->text('controller');
-        $form->text('model');
-        $form->text('url');
-        $form->radio('no_table','Без таблицы')->options([0 => 'Нет', 1 => 'Да'])->default(0);
-        $form->radio('static','Статический')->options([0 => 'Нет', 1 => 'Да'])->default(0);
-
-
-
+        });
 
 
 

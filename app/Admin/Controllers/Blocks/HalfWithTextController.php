@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers\Blocks;
 
-use App\Models\Blocks\Rav;
+use App\Models\Blocks\HalfWithText;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -13,7 +13,7 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Request;
 use PhpParser\Node\Expr\PostDec;
 
-class RavController extends Controller
+class HalfWithTextController extends Controller
 {
     use HasResourceActions;
 
@@ -82,7 +82,7 @@ class RavController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new Rav);
+        $grid = new Grid(new HalfWithText);
 
         $grid->id('ID');
         $grid->name('Название');
@@ -99,7 +99,7 @@ class RavController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Rav::findOrFail($id));
+        $show = new Show(HalfWithText::findOrFail($id));
 
         $show->id('ID');
         $show->created_at('Created at');
@@ -115,19 +115,28 @@ class RavController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new Rav);
+        $form = new Form(new HalfWithText);
 
+
+
+        $form->tab('Контент', function($form){
+            $states = [
+                'off' => ['value' => 1, 'text' => 'справа', 'color' => 'success'],
+                'on'  => ['value' => 0, 'text' => 'слева', 'color' => 'success'],
+            ];
+            $form->image('img','Бэкграунд');
+            $form->switch('to_right','Позиция изображения')->states($states);
+            $form->text('left_heading','Заголовок слева');
+            $form->ckeditor('left_text','Текст слева');
+            $form->text('right_heading','Заголовок справа');
+            $form->ckeditor('right_text','Текст справа');
+        });
         $form->tab('Настройки', function($form){
             $form->display('id','ID');
             $form->text('nr')->default(Request::get('nr'));
             $form->text('parent')->default(Request::get('parent'));
             $form->text('name','Название')->attribute('rel','alias')->rules('required');
         });
-
-        $form->tab('Контент', function($form){
-            $form->text('rav','rav')->default(Request::get('nr'));
-        });
-
         //$form->display('Created at');
         //$form->display('Updated at');
         $form->saved(function (Form $form) {
