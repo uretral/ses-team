@@ -33,7 +33,7 @@
     </div>
 @elseif($data->aside_cite_switcher)
     <div class="aside-banner">
-        <img src="/upload/{{$data->aside_cite_img}}" alt="img"/>
+        <img src="/storage/{{$data->aside_cite_img}}" alt="img"/>
     </div>
 @endif
 
@@ -45,6 +45,6 @@
     </div>
 @elseif($data->aside_advert_switcher)
     <div class="aside-banner">
-        <img src="/upload/{{$data->aside_advert_img}}" alt="img"/>
+        <img src="/storage/{{$data->aside_advert_img}}" alt="img"/>
     </div>
 @endif

@@ -233,6 +233,16 @@ class ModelCreator
      */
     public function getStub()
     {
-        return __DIR__.'/stubs/model.stub';
+        $name = $_POST['table_mode'];
+        $arNames = ['block_hasmany','block_controller'];
+        if(!in_array($name,$arNames)) {
+            $name = 'model';
+        } else {
+            $name = 'model_'.$name;
+        }
+
+
+
+        return __DIR__.'/stubs/'.$name.'.stub';
     }
 }

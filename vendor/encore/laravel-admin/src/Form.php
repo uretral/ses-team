@@ -295,7 +295,6 @@ class Form implements Renderable
      *
      * @param string  $title
      * @param Closure $content
-     *
      * @return $this
      */
     public function tab($title, Closure $content, $active = false)

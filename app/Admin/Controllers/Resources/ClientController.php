@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Admin\Controllers\Lists;
+namespace App\Admin\Controllers\Resources;
 
-use App\Models\Lists\Share;
+use App\Models\Resources\Branch;
+use App\Models\Resources\Client;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -10,7 +11,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
-class ShareController extends Controller
+class ClientController extends Controller
 {
     use HasResourceActions;
 
@@ -79,11 +80,11 @@ class ShareController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new Share);
+        $grid = new Grid(new Client);
 
         $grid->id('ID');
         $grid->name('Название');
-        //$grid->intro_img('Превью');
+        $grid->sort('Сортировка');
 
         return $grid;
     }
@@ -96,7 +97,7 @@ class ShareController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Share::findOrFail($id));
+        $show = new Show(Client::findOrFail($id));
 
         $show->id('ID');
         $show->created_at('Created at');
@@ -107,39 +108,33 @@ class ShareController extends Controller
 
     /**
      * Make a form builder.
-     *
      * @return Form
      */
     protected function form()
     {
-        $form = new Form(new Share);
+        $form = new Form(new Client);
 
-        $form->tab('Настройки', function($form){
-            $form->display('ID');
+        $form->tab('Настройки', function(Form $form){
+            $form->display('id');
+            $form->number('sort', 'Сортировка')->default(10);
+            $form->switch('main');
             $form->alias('alias');
-//            $form->select('parent');
-        });
-        $form->tab('Превью', function($form){
             $form->text('name','Название')->attribute('rel','alias');
-            $form->image('intro_img','Иконка');
-            $form->textarea('intro','Интро текст');
         });
-        $form->tab('Контент', function($form){
-            $form->image('detail_img','Картинка');
-            $form->ckeditor('detail','Текст');
+        $form->tab('Контент', function(Form $form){
+            $form->select('parent')->options(Branch::all()->pluck('name','id'));
+            $form->textarea('intro', 'Интротекст');
+            $form->ckeditor('text', 'Текст основной');
+            $form->image('img', 'Иконка');
         });
-        $form->tab('SEO', function($form){
-            $form->textarea('seo_title','seo title');
-            $form->textarea('seo_desc','seo description');
-            $form->textarea('seo_key','seo keywords');
-
-        });
-
-
-
-        $form->display('Created at');
-        $form->display('Updated at');
-
         return $form;
+    }
+
+    public function content($alias){
+        $data = Client::where('alias',$alias)->firstOrFail();
+        return view('test.index',[
+            'data' => $data,
+            'backend' => ''
+        ]);
     }
 }

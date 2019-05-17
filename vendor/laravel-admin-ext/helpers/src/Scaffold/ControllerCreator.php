@@ -3,6 +3,7 @@
 namespace Encore\Admin\Helpers\Scaffold;
 
 use App\Models\Block;
+use App\Models\Resource;
 use Illuminate\Http\Request;
 
 class ControllerCreator
@@ -130,12 +131,19 @@ class ControllerCreator
     {
         $name = $_POST['table_mode'];
 
-        if($name == 'block_controller'){
+        if($name == 'block_controller' || $name == 'block_hasmany'){
            $block = new Block;
             $block->controller = substr($_POST['controller_name'], 22);
             $block->model = $_POST['model_name'];
             $block->name = $_POST['block_name'];
             $block->url = $_POST['block_alias'];
+            $block->save();
+        } elseif ($name == 'resource_controller') {
+            $block = new Resource;
+            $block->controller = substr($_POST['controller_name'], 22);
+            $block->model = $_POST['model_name'];
+            $block->name = $_POST['block_name'];
+            $block->alias = $_POST['block_alias'];
             $block->save();
         }
 

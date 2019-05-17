@@ -1603,7 +1603,7 @@ ul.sub-menu {
     }
   }
 }
-
+/*
 .detail {
   justify-content: space-between;
   border-bottom: 2px solid @brown-deep;
@@ -1745,8 +1745,192 @@ ul.sub-menu {
     }
   }
 }
+*/
+.detail {
+  justify-content: space-between;
+  border-bottom: 2px solid @brown-deep;
+  background: @white;
+  a {
+    color: @red-main;
+  }
+  h2.inner {
+    width: 100%;
+    font-size: 48px;
+    border-top: 1px solid @border-gray;
+    padding-top:  30px;
+  }
+  aside {
+    .col();
+    .size(3.8);
+    .sm-block({ display: none;});
 
+  }
+  &-content {
+    .col();
+    .size(8.2);
+    .size-sm(12);
+    .padding-left-right;
+    padding-bottom: 50px;
 
+    h1 {
+      font-size: 60px;
+      border-bottom: 1px solid @border-light;
+      .headingsBold;
+      margin-bottom: 34px;
+    }
+    h2, h3 {
+      font-size: 30px;
+      .padding-half-top-bottom;
+      margin: 0;
+    }
+    img {
+      display: block;
+      width: 100%;
+      .padding-bottom;
+    }
+    p {
+      .padding-bottom;
+    }
+    strong {
+      font-weight: bold;
+    }
+    ul {
+      padding-left: 20px;
+      li {
+        line-height: 160%;
+        &:before {
+          content: '\2022';
+          display: inline-block;
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+  &-clients {
+    .row-flex();
+    justify-content: space-between;
+    padding-bottom: 30px;
+  }
+  &-client {
+    .col();
+    .size(5.8);
+    text-align: justify;
+    strong {
+      display: block;
+      padding-bottom: 20px;
+    }
+    a {
+      color: @red-main;
+    }
+  }
+  &-articles {
+    .row-flex();
+    justify-content: space-between;
+    padding-bottom: 50px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid @border-gray;
+
+  }
+  &-article {
+    .col();
+    .size(5.8);
+    text-align: justify;
+    a {
+      color: @black-matte;
+      &:hover {
+        color: @red-main;
+      }
+
+    }
+  }
+  &-contrast {
+    color: @white;
+    padding-bottom: 30px;
+    &-header {
+      .padding-half;
+      padding-bottom: 0;
+      .headingsBold;
+      background: @red-main;
+      strong {
+        font-size: 22px;
+        display: block;
+      }
+      p {
+        font-size: 48px;
+        padding-bottom: 0;
+      }
+    }
+    &-body {
+      .padding-half;
+      background: url("../img/bg/bronya.png");
+      strong {
+        .headingsBold;
+      }
+      table {
+        width: 100%;
+        border: 1px solid @white;
+      }
+      td {
+        border: 1px solid @white;
+        .padding-half;
+        color: @white;
+      }
+      tr {
+        &:first-of-type {
+          td {
+            .headingsBold;
+            text-align: center;
+          }
+        }
+      }
+    }
+    &-footer {
+      height: 20px;
+      background: url("../img/bg/kosaya.png");
+    }
+  }
+  &-utp {
+    h2 {
+      font-size: 35px;
+    }
+    &-text {
+      background: url("../img/bg/bronya.png");
+      color: @white;
+      .padding-half-bottom;
+      margin-bottom: 30px;
+      h3 {
+        font-size: 48px;
+        .padding-half;
+      }
+      p {
+        .padding-half;
+      }
+    }
+  }
+  &-sign {
+    .padding-half-top-bottom;
+    img {
+      max-width: 400px;
+    }
+  }
+  &-aim {
+    border-top: 7px solid @black-matte;
+    .padding-top;
+    .padding-half-bottom;
+    .row-flex();
+    justify-content: space-between;
+    align-items: flex-start;
+    &-img {
+      .col();
+      .size(4);
+    }
+    &-text {
+      .col();
+      .size(7.5);
+    }
+  }
+
+}
 
 .share {
   color: @brown-deep;

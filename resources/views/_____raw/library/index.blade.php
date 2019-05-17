@@ -116,7 +116,10 @@
             </div>
         </div>
     </div>
-</section>@include('snippets.cite')@include('snippets.happy_invert')@include('tpl_home.services_acc')
+</section>
+
+
+@include('snippets.cite')@include('snippets.happy_invert')@include('tpl_home.services_acc')
 
 
 <section>
@@ -152,5 +155,3 @@
 </section>
 
 @include('snippets.zip')
-
-

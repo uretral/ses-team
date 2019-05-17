@@ -11,6 +11,9 @@
 */
 
 
+define('MENU',\App\Models\Category::list());
+
+Route::get('/tim/{alias?}','\App\Models\Tim@index');
 
 Route::get('/tratra', '\App\Admin\Controllers\BlockTestControllers@block');
 Route::any('/attach', 'ImageController@attach');
@@ -21,15 +24,18 @@ Route::get('/test', 'TestController@index');
 Route::get('/category','\App\Admin\Controllers\CategoryController@page');
 Route::get('/blocks/{alias}/{id}/{static}/{backend?}', '\App\Admin\Controllers\CategoryController@block');
 
-foreach (\App\Models\Category::all() as $category){
+
+$categories = \App\Models\Category::all();
+//static pages
+foreach ($categories as $category){
     if(request()->getPathInfo() == $category->link){
-        Route::get(request()->path() ,'\App\Admin\Controllers\CategoryController@content');
+        Route::get(request()->path().'' ,'\App\Admin\Controllers\CategoryController@content');
     }
 }
-
-
-
-
-
-
-
+// dynamic pages
+foreach ($categories as $category){
+    if(strpos($category->link,'{alias}')){
+        $resource = \App\Models\Resource::find($category->hook);
+        Route::get($category->link ,$resource->controller."@content");
+    }
+}

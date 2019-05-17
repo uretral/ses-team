@@ -77,6 +77,9 @@
                             <label>
                                 <input type="radio"  value="block_controller" name="table_mode" /> Блок
                             </label>
+                            <label>
+                                <input type="radio"  value="block_hasmany" name="table_mode" /> Has-many
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -352,7 +355,11 @@ $(function () {
             'name': 'sort',
             'type': 'integer',
             'default': true,
-        }, {
+        },{
+            'name': 'menu',
+            'type': 'integer',
+            'default': true,
+        },{
             'name': 'name',
             'type': 'string',
             'default': true,
@@ -361,15 +368,15 @@ $(function () {
             'type': 'string',
             'default': false,
         },{
-            'name': 'intro',
+            'name': 'introtext',
             'type': 'text',
             'default': false,
         },{
-            'name': 'detail_img',
+            'name': 'img',
             'type': 'string',
             'default': false,
         },{
-            'name': 'detail',
+            'name': 'content',
             'type': 'text',
             'default': false,
         },{
@@ -398,17 +405,37 @@ $(function () {
             'type': 'integer',
             'default': true,
         }],
+        'block_hasmany' : [{
+            'name': 'parent',
+            'type': 'integer',
+            'default': true,
+        }, {
+            'name': 'name',
+            'type': 'string',
+            'default': true,
+        }, {
+            'name': 'nr',
+            'type': 'integer',
+            'default': true,
+        }],
         'controller' : []
     }
 
     $(document).on('change','[name="table_mode"]',function(){
         $('#table-fields tbody').html('');
-        if($(this).val() == 'block_controller'){
-            $('#block_fields').show()
+        if($(this).val() == 'block_controller' || $(this).val() == 'block_hasmany'){
+            $('#block_fields').show();
+            $('#inputTableName').val('block_');
             $('#inputModelName').val('App\\Models\\Blocks\\');
             $('#inputControllerName').val('App\\Admin\\Controllers\\Blocks\\Controller');
+        } else if ($(this).val() == 'resource_controller') {
+            $('#block_fields').show();
+            $('#inputTableName').val('resource_');
+            $('#inputModelName').val('App\\Models\\Resources\\');
+            $('#inputControllerName').val('App\\Admin\\Controllers\\Resources\\Controller');
         } else {
             $('#block_fields').hide()
+            $('#inputTableName').val('');
             $('#inputModelName').val('App\\Models\\');
             $('#inputControllerName').val('App\\Admin\\Controllers\\Controller');
         }

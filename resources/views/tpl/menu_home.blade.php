@@ -1,12 +1,13 @@
 <ul class="main_nav">
-{{--    @foreach($home['popular'] as $popular)--}}
-{{--        <li>--}}
-{{--            <a href="{{$popular['alias']}}"><span>{{$popular['name']}}</span></a>--}}
-{{--        </li>--}}
-{{--    @endforeach--}}
+    @foreach(MENU[5]['child'] as $popular)
+        @if($popular['menu'])
+            <li>
+                <a href="{{$popular['link']}}"><span>{{$popular['name']}}</span></a>
+            </li>
+        @endif
+    @endforeach
     <li class="root">
         <a href="javascript:"><span>Другие</span></a>
-        {{--
         <ul class="sub-menu">
             <li>
                 <h4>Вредители</h4>
@@ -16,24 +17,18 @@
                     </li>
                     <li class="sub-menu-double">
                         <ul class="sub-menu-vertical">
-                            @if($home['tree'][1]  )
-                                @foreach($home['tree'][1]['child'] as $k => $item)
-                                    @if(($k % 2) == 0)
-                                        <li><a href="/{{$item['alias']}}">{{$item['name']}}</a></li>
-                                    @endif
-                                @endforeach
-                            @endif
-
+                            @foreach(MENU[5]['child'] as $k => $item)
+                                @if(($k % 2) == 0 && $item['parent'] == 1)
+                                    <li><a href="{{$item['link']}}">{{$item['name']}}</a></li>
+                                @endif
+                            @endforeach
                         </ul>
                         <ul class="sub-menu-vertical">
-                            @if($home['tree'][1])
-                                @foreach($home['tree'][1]['child'] as $k => $item)
-                                    @if(($k % 2) != 0)
-                                        <li><a href="/{{$item['alias']}}">{{$item['name']}}</a></li>
-                                    @endif
-                                @endforeach
-                            @endif
-
+                            @foreach(MENU[5]['child'] as $k => $item)
+                                @if(($k % 2) != 0 && $item['parent'] == 1)
+                                    <li><a href="{{$item['link']}}">{{$item['name']}}</a></li>
+                                @endif
+                            @endforeach
                         </ul>
                     </li>
                     <li>
@@ -41,24 +36,18 @@
                     </li>
                     <li class="sub-menu-double">
                         <ul class="sub-menu-vertical">
-                            @if($home['tree'][2])
-                                @foreach($home['tree'][2]['child'] as $k => $item)
-                                    @if(($k % 2) == 0)
-                                        <li><a href="/{{$item['alias']}}">{{$item['name']}}</a></li>
-                                    @endif
-                                @endforeach
-                            @endif
-
+                            @foreach(MENU[5]['child'] as $k => $item)
+                                @if(($k % 2) == 0 && $item['parent'] == 2)
+                                    <li><a href="{{$item['link']}}">{{$item['name']}}</a></li>
+                                @endif
+                            @endforeach
                         </ul>
                         <ul class="sub-menu-vertical">
-                            @if($home['tree'][2])
-                                @foreach($home['tree'][2]['child'] as $k => $item)
-                                    @if(($k % 2) != 0)
-                                        <li><a href="/{{$item['alias']}}">{{$item['name']}}</a></li>
-                                    @endif
-                                @endforeach
-                            @endif
-
+                            @foreach(MENU[5]['child'] as $k => $item)
+                                @if(($k % 2) != 0 && $item['parent'] == 2)
+                                    <li><a href="{{$item['link']}}">{{$item['name']}}</a></li>
+                                @endif
+                            @endforeach
                         </ul>
                     </li>
                 </ul>
@@ -66,45 +55,33 @@
             <li>
                 <span>&nbsp;</span>
                 <ul class="sub-menu-level">
-                    @if($home['tree'][3])
-                        @foreach($home['tree'][3]['child'] as $k => $item)
-                            <li><a href="/{{$item['alias']}}">{{$item['name']}}</a></li>
-                        @endforeach
-                    @endif
-
+                    @foreach(MENU[5]['child'] as $k => $item)
+                        @if($item['parent'] == 3)
+                            <li><a href="{{$item['link']}}">{{$item['name']}}</a></li>
+                        @endif
+                    @endforeach
                 </ul>
             </li>
-            <li>
-                <h4>Страховой полис</h4>
-
-                <ul class="sub-menu-level">
-
-                    <li>
-
-                        <a href="javascript:">Обслуживание 24/7</a>
-
-
-                    </li>
-                    <li>
-
-                        <a href="javascript:">Ежемесячный аудит</a>
-
-
-                    </li>
-                    <li>
-
-                        <a href="javascript:">Скидка по полису 20%</a>
-
-
-                    </li>
-                </ul>
-            </li>
+{{--            <li>--}}
+{{--                <h4>Страховой полис</h4>--}}
+{{--                <ul class="sub-menu-level">--}}
+{{--                    <li>--}}
+{{--                        <a href="javascript:">Обслуживание 24/7</a>--}}
+{{--                    </li>--}}
+{{--                    <li>--}}
+{{--                        <a href="javascript:">Ежемесячный аудит</a>--}}
+{{--                    </li>--}}
+{{--                    <li>--}}
+{{--                        <a href="javascript:">Скидка по полису 20%</a>--}}
+{{--                    </li>--}}
+{{--                </ul>--}}
+{{--            </li>--}}
         </ul>
-        --}}
 
     </li>
+        {{--
     <li class="root ">
-        <a href="{{MENU[2]['link']}}"><span>{{MENU[2]['name']}}</span></a>{{--        Библиотека--}}
+        <a href="{{MENU[2]['link']}}"><span>{{MENU[2]['name']}}</span></a>--}}{{--        Библиотека--}}{{--
 
         <ul class="sub-menu">
             <li>
@@ -249,6 +226,7 @@
             </li>
         </ul>
     </li>
+        --}}
     <li>
         <a href="{{MENU[7]['link']}}"><span>{{MENU[7]['name']}}</span></a>{{--Почему мы--}}
     </li>

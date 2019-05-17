@@ -76,6 +76,16 @@ class Category extends Model
         foreach (self::all()->toArray() as $i) {
 
             $menu[$i['id']] = $i;
+            if($i['hook']){
+                $resource = Resource::find($i['hook'])->toArray();
+                $children = $resource['model']::select('id','name','alias','menu','parent')->orderBy("sort")->get()->toArray();
+                foreach ($children as $child){
+                    $link = str_replace('{alias}',$child['alias'],$i['link']);
+                    $child['link'] = $link;
+                    $child['root'] = $i['parent'];
+                    $menu[$i['id']]['child'][] = $child;
+                }
+            }
             $menu[$i['id']]['d'] = request()->path();
             $pos = strpos(request()->getPathInfo(), $i['link']);
             strpos(request()->getPathInfo(), $i['link']) !== false ? $menu[$i['id']]['active'] = 'active' : $menu[$i['id']]['active'] = '';

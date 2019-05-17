@@ -68,7 +68,7 @@
                                 <button type="submit"><em>Поиск</em></button>
                             </form>
                             @if(strpos(url()->current(),'business'))
-{{--                                @include('layouts.menu_business')--}}
+                                @include('tpl.menu_business')
                             @else
                                 @include('tpl.menu_home')
                             @endif

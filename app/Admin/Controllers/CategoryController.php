@@ -6,6 +6,7 @@ use App\Models\Block;
 use App\Models\BlockTest;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
+use App\Models\Resource;
 use App\Models\Test;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -32,11 +33,18 @@ class CategoryController extends Controller
             $content->body(Category::treeMenu(function ($tree) {
                 $tree->branch(function ($branch) {
                     (Category::root($branch['id']) != $branch['link']) ? $style = 'color:red': $style = '';
+                    $link = "";
+                    if($branch['hook']){
+                        $hook = Resource::where('id',$branch['hook'])->first();
+                        $link = "<a class='dd-nodrag' href='/admin/resource/{$hook['alias']}'>{$hook['name']}</a>";
+                    }
+
+
                     return "
                     <span style='".$style."'>{$branch['id']} - {$branch['name']} 
                      &nbsp;&nbsp;&nbsp; =>  &nbsp;&nbsp;&nbsp; 
                       " .$branch['link']. "
-                     &nbsp;&nbsp;&nbsp; </span> ";
+                     &nbsp;&nbsp;&nbsp; </span> " . $link;
                 });
             }));
         });
@@ -139,6 +147,7 @@ class CategoryController extends Controller
             $form->display('id');
             $form->alias('alias','Алиас');
             $form->text('link');
+            $form->select('hook')->options(Resource::all()->pluck('name','id'));
             $form->text('name','Название');
         });
         $form->tab('SEO', function($form){
@@ -186,8 +195,8 @@ class CategoryController extends Controller
         return $block->model::block($data,$bEnd = $backend);
     }
 
-    public  function content(){
-        define('MENU',\App\Models\Category::list());
+    public function content(){
+
         $row = Category::where('link',\request()->getPathInfo())->first();
         $arJson = json_decode($row->source);
         $data = '';

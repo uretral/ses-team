@@ -18,8 +18,10 @@ Route::group([
 
 
     $router->resource('test', TestController::class);
+    $router->resource('tim', TimController::class);
 
     $router->resource('blocks', 'BlockController');
+    $router->resource('resources', 'ResourceController');
 
     if(strpos(Request::instance()->path(),'admin/static/') !== false){
         $block = \App\Models\Block::where('url',request()->segment(3))->first();
@@ -31,5 +33,11 @@ Route::group([
         $block = \App\Models\Block::where('url',request()->segment(3))->first();
         $router->resource('block/'.$block->url, $block->controller);
         $router->resource('block/'.$block->url.'/{parent}', $block->controller);
+    }
+
+    if(strpos(Request::instance()->path(),'admin/resource/') !== false){
+        $resource = \App\Models\Resource::where('alias',request()->segment(3))->first();
+        $router->resource('resource/'.$resource->alias, $resource->controller);
+        $router->resource('resource/'.$resource->alias.'/{parent}', $resource->controller);
     }
 });

@@ -3,6 +3,7 @@
 namespace Encore\Admin\Form;
 
 use Encore\Admin\Form;
+use Encore\Admin\Form\Field;
 use Illuminate\Support\Collection;
 
 /**
@@ -66,6 +67,7 @@ class Tab
      */
     protected $offset = 0;
 
+
     /**
      * Tab constructor.
      *
@@ -73,6 +75,7 @@ class Tab
      */
     public function __construct(Form $form)
     {
+
         $this->form = $form;
 
         $this->tabs = new Collection();

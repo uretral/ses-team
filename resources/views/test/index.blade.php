@@ -1,16 +1,8 @@
-{{--@php--}}
-{{--$u = \App\Models\Test::all()->first()->toArray();--}}
-{{--@endphp--}}
-{{--@dump($u)--}}
 
-@dump($rt)
+@dump($backend)
+TEST TPL
+@dump($data)
+@dump($data->many)
+@dump($data->bla)
 
-
-{{--@dump(app('request')->query())--}}
-
-
-{{--<img src="{{asset('storage/'.$u['intro_img'])}}" alt="">--}}
-{{--{!! $u['detail'] !!}--}}
-
-
-ddddddddddddddddddddddddd
+{!! \App\Models\Statics\Breadcrumbs::resource('fffffff') !!}
