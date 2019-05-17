@@ -1,8 +1,9 @@
 <?php
 
-namespace DummyNamespace;
+namespace App\Admin\Controllers\Resources;
 
-use DummyModelNamespace;
+use App\Models\Resources\Client;
+use App\Models\Resources\Tim;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -10,7 +11,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
-class DummyClass extends Controller
+class TimController extends Controller
 {
     use HasResourceActions;
 
@@ -79,7 +80,7 @@ class DummyClass extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new DummyModel);
+        $grid = new Grid(new Tim);
 
         $grid->id('ID');
         $grid->name('Название');
@@ -96,7 +97,7 @@ class DummyClass extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(DummyModel::findOrFail($id));
+        $show = new Show(Tim::findOrFail($id));
 
         $show->id('ID');
         $show->created_at('Created at');
@@ -112,33 +113,46 @@ class DummyClass extends Controller
      */
     protected function form()
     {
-        $form = new Form(new DummyModel);
+        $form = new Form(new Tim);
 
-        $form->tab('Настройки', function($form){
+        $form->tab('Настройки', function(Form $form){
             $form->display('ID');
             $form->alias('alias');
-        });
-        $form->tab('Превью', function($form){
+//          $form->select('parent');
             $form->text('name','Название')->attribute('rel','alias');
+            $form->number('sort')->default(10);
+        });
+        $form->tab('Превью', function(Form $form){
+
             $form->image('intro_img','Иконка');
             $form->textarea('introtext','Интро текст');
         });
-        $form->tab('Контент', function($form){
+        $form->tab('Контент', function(Form $form){
             $form->image('detail_img','Картинка');
             $form->ckeditor('content','Текст');
         });
-        $form->tab('SEO', function($form){
+        $form->tab('SEO', function(Form $form){
             $form->textarea('seo_title','seo title');
             $form->textarea('seo_desc','seo description');
             $form->textarea('seo_key','seo keywords');
 
         });
+        $form->tab('many', function(Form $form){
+            $form->multipleSelect('many','мультиселект')->options(Client::all()->pluck('name','id'));
+        });
 
 
-
-        $form->display('Created at');
-        $form->display('Updated at');
+        //$form->display('Created at');
+        //$form->display('Updated at');
 
         return $form;
+    }
+
+    public function content($alias){
+        $data = Tim::where('alias',$alias)->firstOrFail();
+        return view('test.index',[
+            'data' => $data,
+            'backend' => ''
+        ]);
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace DummyNamespace;
+namespace App\Admin\Controllers;
 
-use DummyModelNamespace;
+use App\Models\Resource;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -10,7 +10,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
-class DummyClass extends Controller
+class ResourceController extends Controller
 {
     use HasResourceActions;
 
@@ -79,11 +79,15 @@ class DummyClass extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new DummyModel);
+        $grid = new Grid(new Resource);
 
         $grid->id('ID');
         $grid->name('Название');
-        //$grid->intro_img('Превью');
+        $grid->actions(function ($actions) {
+            $g = $actions->row->toArray();
+            $actions->prepend('<a href="/admin/resource/'.$g['alias'].'"><i class="fa fa-arrow-right"></i></a>&nbsp;&nbsp;&nbsp;');
+            $actions->disableDelete();
+        });
 
         return $grid;
     }
@@ -96,7 +100,7 @@ class DummyClass extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(DummyModel::findOrFail($id));
+        $show = new Show(Resource::findOrFail($id));
 
         $show->id('ID');
         $show->created_at('Created at');
@@ -112,32 +116,18 @@ class DummyClass extends Controller
      */
     protected function form()
     {
-        $form = new Form(new DummyModel);
+        $form = new Form(new Resource);
 
-        $form->tab('Настройки', function($form){
-            $form->display('ID');
-            $form->alias('alias');
-        });
-        $form->tab('Превью', function($form){
-            $form->text('name','Название')->attribute('rel','alias');
-            $form->image('intro_img','Иконка');
-            $form->textarea('introtext','Интро текст');
-        });
-        $form->tab('Контент', function($form){
-            $form->image('detail_img','Картинка');
-            $form->ckeditor('content','Текст');
-        });
-        $form->tab('SEO', function($form){
-            $form->textarea('seo_title','seo title');
-            $form->textarea('seo_desc','seo description');
-            $form->textarea('seo_key','seo keywords');
-
-        });
+        $form->display('ID');
+        $form->text('alias');
+        $form->text('name');
+        $form->text('controller');
+        $form->text('model');
 
 
 
-        $form->display('Created at');
-        $form->display('Updated at');
+//        $form->display('Created at');
+//        $form->display('Updated at');
 
         return $form;
     }

@@ -1,8 +1,8 @@
 <?php
 
-namespace DummyNamespace;
+namespace App\Admin\Controllers\Resources;
 
-use DummyModelNamespace;
+use App\Models\Resources\Library;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -10,7 +10,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
-class DummyClass extends Controller
+class LibraryController extends Controller
 {
     use HasResourceActions;
 
@@ -79,11 +79,11 @@ class DummyClass extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new DummyModel);
+        $grid = new Grid(new Library);
 
         $grid->id('ID');
         $grid->name('Название');
-        //$grid->intro_img('Превью');
+        $grid->sort('Сортировка');
 
         return $grid;
     }
@@ -96,7 +96,7 @@ class DummyClass extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(DummyModel::findOrFail($id));
+        $show = new Show(Library::findOrFail($id));
 
         $show->id('ID');
         $show->created_at('Created at');
@@ -112,19 +112,22 @@ class DummyClass extends Controller
      */
     protected function form()
     {
-        $form = new Form(new DummyModel);
+        $form = new Form(new Library);
 
         $form->tab('Настройки', function($form){
             $form->display('ID');
             $form->alias('alias');
+//          $form->select('parent');
+            $form->text('name','Название')->attribute('rel','alias');
+            $form->number('sort')->default(10);
         });
         $form->tab('Превью', function($form){
-            $form->text('name','Название')->attribute('rel','alias');
+
             $form->image('intro_img','Иконка');
             $form->textarea('introtext','Интро текст');
         });
         $form->tab('Контент', function($form){
-            $form->image('detail_img','Картинка');
+            $form->image('img','Картинка');
             $form->ckeditor('content','Текст');
         });
         $form->tab('SEO', function($form){
@@ -135,10 +138,14 @@ class DummyClass extends Controller
         });
 
 
-
-        $form->display('Created at');
-        $form->display('Updated at');
-
         return $form;
+    }
+
+    public function content($alias){
+        $data = Library::where('alias',$alias)->firstOrFail();
+        return view('test.index',[
+            'data' => $data,
+            'backend' => ''
+        ]);
     }
 }
