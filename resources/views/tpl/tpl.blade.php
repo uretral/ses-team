@@ -16,7 +16,7 @@
             <a class="header-call-btn" href="javascript:"></a>
             <div class="header-logo">
                 <a href="{{MENU[1]['link']}}">
-                    <img src="{{asset('img/logo.jpg')}}" alt="logo" style="    width: 70%;    margin: 0 auto;    display: block;"/>
+                    <img src="{{asset('img/logo.jpg')}}" alt="logo"/>
                 </a>
             </div>
             <input type="checkbox" id="topMenuSwitcher"/>
@@ -27,25 +27,30 @@
             </label>
             <div class="header-nav">
                 <div class="header-nav-info">
-                    <a href="javascript:"><span>tel: + 7 495 001 01 50</span></a>
-                    <input type="checkbox" id="regionsSwitcher"/>
+                    <a href="tel:{{REGION['phone_href']}}"><span>Тел: {{REGION['phone']}}</span></a>
+{{--                    <input type="checkbox" id="regionsSwitcher"/>
                     <label for="regionsSwitcher"><span>Регионы</span>
                         <div class="regions-top">
                             <div rel="region"></div>
+                            <select class="simple wider">
+                                @foreach(\App\Admin\Controllers\SiteController::regions() as $region)
+                                    <option @if(request()->root() == $region->url) selected @endif value="{{$region->url}}">{{$region['region']}}</option>
+                                @endforeach
+                            </select>
                         </div>
-                    </label>
+                    </label>--}}
                     <input  type="checkbox" id="mobileSearchSwitcher"/>
                     <label for="mobileSearchSwitcher"><span>Поиск</span>
 
-                        <form class="mobile-search-top" action="{{MENU[6]['link']}}">
+                        <form class="mobile-search-top" action="{{MENU[6]['link']}}" method="get">
                             <label>
-                                <input type="search"/>
+                                <input type="search" name="q" value=""/>
                             </label>
                             <button type="submit"><em>Поиск</em></button>
                         </form>
                     </label>
 
-                    <a href="javascript:"><span>поддержка</span></a>
+                    <a href="{{MENU[28]['link']}}"><span>Контакты</span></a>
                 </div>
                 <div class="header-nav-main">
                     <div class="header-nav-menu">
@@ -63,7 +68,7 @@
                             <label for="searchSwitcher"></label>
                             <form class="search-top" action="{{MENU[6]['link']}}">
                                 <label>
-                                    <input type="search"/>
+                                    <input type="search" name="q" value=""/>
                                 </label>
                                 <button type="submit"><em>Поиск</em></button>
                             </form>
@@ -75,7 +80,7 @@
                         </div>
                     </div>
                     <div class="header-nav-callback">
-                        <a href="javascript:" class="red-callback">Оставить<span>Заявку</span></a>
+                        <a href="javascript:" class="red-callback" rel="modal" data-action="callback" >Оставить<span>Заявку</span></a>
                     </div>
                 </div>
             </div>
@@ -84,7 +89,30 @@
 </header>
 
 
+
+
 @yield('content')
+
+
+<section class="linker">
+	<div>
+		<div class="linker-items">
+			<div class="linker-watsapp">
+                <a title="Whatsapp" href="whatsapp://send?phone=79997167942">
+                    <img src="/img/wasend.png" alt="watsapp send"/>
+                </a>
+            </div>
+
+			<div class="linker-callback">
+                <a href="javascript:" rel="modal">
+                    <span>оставить заявку</span>
+                </a>
+            </div>
+		</div>
+	</div>
+</section>
+
+
 <footer>
 
     <div class="footer">
@@ -94,17 +122,14 @@
                     <h5>Почему SESTEAM</h5>
                     <ul>
                         <li>
-                            <a href="javascript:">Вакансии</a>
+                            <a href="{{MENU[26]['link']}}"><span>{{MENU[26]['name']}}</span></a>
                         </li>
                         <li>
-                            <a href="javascript:">Медиа/Новости</a>
+                            <a href="{{MENU[27]['link']}}"><span>{{MENU[27]['name']}}</span></a>
                         </li>
-                        <li>
-                            <a href="javascript:">Откытие филиала</a>
-                        </li>
-                        <li>
+{{--                        <li>
                             <a href="javascript:">Продажа Вашего Бизнеса</a>
-                        </li>
+                        </li>--}}
                     </ul>
                 </div>
 
@@ -132,17 +157,14 @@
                     <h5>Поддержка</h5>
                     <ul>
                         <li>
-                            <a href="javascript:">Связаться с нами</a>
+                            <a href="{{MENU[28]['link']}}"><span>{{MENU[28]['name']}}</span></a>
                         </li>
                         <li>
-                            <a href="javascript:">Товарный знак</a>
+                            <a href="{{MENU[22]['link']}}"><span>{{MENU[22]['name']}}</span></a>
                         </li>
-                        <li>
-                            <a href="javascript:">Местонахождение</a>
-                        </li>
-                        <li>
+{{--                        <li>
                             <a href="javascript:">Часто задаваемые вопросы</a>
-                        </li>
+                        </li>--}}
                     </ul>
                 </div>
             </div>
@@ -150,18 +172,36 @@
                 <p>© 2019 Ses Team</p>
             </div>
             <div class="footer-terms">
-                <a href="javascript:">условия пользования</a>
-                |
-                <a href="javascript:">Политика конфедициальности</a>
-                |
-                <a href="javascript:">карта сайта
-                </a>
+                <a href="{{MENU[31]['link']}}">Условия пользования</a>
+                <em>|</em>
+                <a href="{{MENU[30]['link']}}">Политика конфедициальности</a>
             </div>
         </div>
     </div>
+    <section class="modal">
+    	<div>
+    		<div class="modal-wrapper">
+                <div class="modal-content">
+                    <a href="javascript:;" class="modal-close"></a>
+                    <div class="callback-form form">
+                        <form action="javascript:" id="callback">
+                            <input type="hidden" name="action" value="callback"/>
+                            <input type="hidden" name="discount" value="без скидки">
+                            <label><input type="hidden" name="page" value="{{request()->fullUrl()}}"/></label>
+                            <label><input type="text" name="name" placeholder="Ваше имя"/></label>
+                            <label><input type="tel" name="phone" placeholder="Ваш телефон"/></label>
+                            <label><input type="submit" value="Отправить"/></label>
+                        </form>
+                    </div>
+                </div>
+    		</div>
+    	</div>
+    </section>
 </footer>
 
 <script src="{{ asset('js/jq.js') }}"></script>
+<script src="{{ asset('js/owl.carousel.js') }}"></script>
+<script src="{{ asset('js/jquery.inputmask.bundle.min.js') }}"></script>
 <script src="{{ asset('js/script.js') }}"></script>
 </body>
 </html>

@@ -1,26 +1,37 @@
 <div class="aside-region">
-    <h3>Find Your Local Branch</h3>
-    <p>Enter a zip code below to view local branches.</p>
+    <h3>Представители в регионах</h3>
+    <p>Выберите ваш регион:</p>
+
+    <select rel="region-links" class="simple">
+        @foreach(\App\Admin\Controllers\SiteController::regions() as $region)
+            <option @if(request()->getHost() == $region->url) selected @endif value="{{$region->url}}">{{$region['region']}}</option>
+        @endforeach
+    </select>
+     <br/>
+     <br/>
+     <br/>
     <div rel="region"></div>
 </div>
 <div class="aside-call">
     <h3>Беспокоят насекомые?</h3>
     <p class="tel">
-        Позвоните нам: <span>+7 905 552 40 40</span>
+        Позвоните нам: <span>{{REGION['phone']}}</span>
     </p>
     <p>
         Или отправьте нам заявку, мы перезвоним Вам в течении 5ти минут:
     </p>
 
-    <form action="javascript:">
+    <form action="javascript:" id="aside_form">
+        <input type="hidden" name="action" value="aside_form"/>
         <input type="text" name="name" placeholder="ваше имя"/>
-        <input type="text" name="email" placeholder="ваше email"/>
-        <input type="text" name="phone" placeholder="ваше телефон"/>
-
+        <input type="email" name="email" placeholder="ваш email"/>
+        <input type="tel" name="phone" placeholder="ваш телефон"/>
         <button class="sbt"><span>Отправить</span></button>
-
         <mark>
-            By clicking the “Get Started” button, I authorize Orkin to contact me about their services at this number using an auto dialer. I understand my consent is not required to make a purchase.
+            Нажимая на кнопку "Отправить", я даю
+            <a target="_blank" href="{{MENU[30]['link']}}">согласие на обработку персональных данных</a>
+            . Информация на сайте не является публичной
+            <a target="_blank" href="{{MENU[31]['link']}}">офертой</a>
         </mark>
     </form>
 </div>
@@ -33,7 +44,13 @@
     </div>
 @elseif($data->aside_cite_switcher)
     <div class="aside-banner">
-        <img src="/storage/{{$data->aside_cite_img}}" alt="img"/>
+        @if($data->aside_cite_link)
+            <a href="{{$data->aside_cite_link}}">
+                <img src="/storage/{{$data->aside_cite_img}}" alt="img"/>
+            </a>
+            @else
+            <img src="/storage/{{$data->aside_cite_img}}" alt="img"/>
+        @endif
     </div>
 @endif
 
@@ -45,6 +62,18 @@
     </div>
 @elseif($data->aside_advert_switcher)
     <div class="aside-banner">
-        <img src="/storage/{{$data->aside_advert_img}}" alt="img"/>
+        @if($data->aside_advert_link)
+            <a href="{{$data->aside_advert_link}}">
+                <img src="/storage/{{$data->aside_advert_img}}" alt="img"/>
+            </a>
+        @else
+            <img src="/storage/{{$data->aside_advert_img}}" alt="img"/>
+        @endif
     </div>
 @endif
+
+<div class="aside-sticker-banner">
+    <h3><a href="{{MENU[22]['link']}}">Узнать больше</a></h3>
+    <img src="/img/sticker-shadowed.png" alt="sticker"/>
+</div>
+

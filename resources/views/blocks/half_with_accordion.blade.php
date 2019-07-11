@@ -2,7 +2,7 @@
 <section>
     <div class="half">
         <div class="half-bg">
-            <div class="half-bg-img">
+            <div class="half-bg-img @if($data->to_right) right @endif">
                 <img src="/storage/{{$data->img}}" alt=""/>
             </div>
 

@@ -27,6 +27,11 @@ use Illuminate\Database\Eloquent\Model;
 class BusinessServicesMethod extends Model
 {
     protected $table = 'hasmany_business_service_methods';
+    protected $guarded = [];
+
+    public function methods(){
+        return $this->belongsTo(BusinessService::class,'parent');
+    }
 
 /*    public static function block($data,$b){
         return view('test.index',[

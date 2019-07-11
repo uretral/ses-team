@@ -114,12 +114,13 @@ class ArticleController extends Controller
     {
         $form = new Form(new Article);
 
-        $form->tab('Настройки', function($form){
+        $form->tab('Настройки', function(Form $form){
 
             $form->display('ID');
             $form->select('parent', 'Родитель')->options(HomeService::all()->pluck('name','id'));
             $form->text('alias', 'alias');
             $form->text('name','Название')->attribute('rel','alias');
+            $form->image('intro_img', 'Картинка для слайдера');
             $form->textarea('utp', 'УТП');
             $form->number('sort', 'Сортировка')->default(10);
             $form->textarea('intro', 'Интротекст')->default('');
@@ -155,7 +156,7 @@ class ArticleController extends Controller
 
     public function content($alias){
         $data = Article::where('alias',$alias)->firstOrFail();
-        return view('test.index',[
+        return view('resources.article',[
             'data' => $data,
             'backend' => ''
         ]);

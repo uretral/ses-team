@@ -9,14 +9,17 @@
 				</cite>
 			</div>
 
-			<div id="clock">
-				<div>
-					Оставьте заявку в течении
-					<span class="minutes"></span> :
-					<span class="seconds"></span>
-					и получите скидку <span>15%</span>
+			@if($data->timer)
+				<div id="clock">
+					<div>
+						Оставьте заявку в течении
+						<span class="minutes"></span> :
+						<span class="seconds"></span>
+						и получите скидку <span>15%</span>
+					</div>
 				</div>
-			</div>
+			@endif
+
 		</div>
 	</div>
 </section>

@@ -130,12 +130,14 @@ class HalfWithAccordionController extends Controller
             ];
             $form->image('img','Бэкграунд');
             $form->switch('to_right','Позиция изображения')->states($states);
+            $form->switch('mobile_img','Показывать изображение в мобильной версии');
+
             $form->text('heading','Заголовок');
             $form->ckeditor('text','Текст');
         });
         $form->tab('Аккордеон', function ($form) {
             $form->hasMany('helpers', function (Form\NestedForm $form) {
-                $form->text('hook')->attribute(['readonly' => 'readonly'])->value(\request()->get('parent'));
+//                $form->text('hook')->attribute(['readonly' => 'readonly'])->value(\request()->get('parent'));
                 $form->text('name', 'Заголовок');
                 $form->textarea('h_text', 'Текст');
             });
@@ -147,8 +149,12 @@ class HalfWithAccordionController extends Controller
             $form->text('name', 'Название');
         });
 
+        $form->saved(function (Form $form) {
+            return Category::updateSource($form->model(), \request()->segment(3), get_class($this));
+        });
 
 
+/*
             if (request()->get('helpers')) {
 
                 function setFile($arFile){
@@ -217,7 +223,7 @@ class HalfWithAccordionController extends Controller
                 $form->saved(function (Form $form) {
                     return Category::updateSource($form->model(), \request()->segment(3), get_class($this));
                 });
-            }
+            }*/
         return $form;
     }
 }

@@ -83,6 +83,7 @@ class ResourceController extends Controller
 
         $grid->id('ID');
         $grid->name('Название');
+        $grid->searchable('Включить поиск')->switch();
         $grid->actions(function ($actions) {
             $g = $actions->row->toArray();
             $actions->prepend('<a href="/admin/resource/'.$g['alias'].'"><i class="fa fa-arrow-right"></i></a>&nbsp;&nbsp;&nbsp;');
@@ -123,6 +124,7 @@ class ResourceController extends Controller
         $form->text('name');
         $form->text('controller');
         $form->text('model');
+        $form->switch('searchable');
 
 
 

@@ -74,16 +74,54 @@ class Category extends Model
     {
         $menu = [];
         foreach (self::all()->toArray() as $i) {
+            $i['resource'] = '';
+            $menu[$i['id']] = $i;
 
+            if($i['hook']){
+
+                $resource = Resource::find($i['hook'])->toArray();
+                $menu[$i['id']]['resource'] = $resource['model'];
+                $children = $resource['model']::select('id','name','enabled','name_short','alias','menu','menu_position','parent','disabled')->orderBy("sort")->get()->toArray(); //
+//                dump($children);
+                foreach ($children as $child){
+                    if($child['enabled'] && !$child['disabled']){
+                        $link = str_replace('{alias}',$child['alias'],$i['link']);
+                        $child['link'] = $link;
+                        $child['root'] = $i['parent'];
+                        strpos(request()->getPathInfo(), $link) !== false ? $child['active'] = 'active' : $child['active'] = '';
+                        $menu[$i['id']]['child'][] = $child;
+                    }
+                }
+
+            }
+            $menu[$i['id']]['d'] = request()->path();
+            $pos = strpos(request()->getPathInfo(), $i['link']);
+            strpos(request()->getPathInfo(), $i['link']) !== false ? $menu[$i['id']]['active'] = 'active' : $menu[$i['id']]['active'] = '';
+        }
+        return $menu;
+    }
+
+
+
+/*    public static function list()
+    {
+        $menu = [];
+        foreach (self::all()->toArray() as $i) {
+            $i['resource'] = '';
             $menu[$i['id']] = $i;
             if($i['hook']){
                 $resource = Resource::find($i['hook'])->toArray();
-                $children = $resource['model']::select('id','name','alias','menu','parent')->orderBy("sort")->get()->toArray();
+                $menu[$i['id']]['resource'] = $resource['model'];
+                $children = $resource['model']::select('id','name','alias','menu','menu_position','parent','active','disabled','category')->orderBy("sort")->get()->toArray(); //
+
                 foreach ($children as $child){
-                    $link = str_replace('{alias}',$child['alias'],$i['link']);
-                    $child['link'] = $link;
-                    $child['root'] = $i['parent'];
-                    $menu[$i['id']]['child'][] = $child;
+                    if($child['active'] && !$child['disabled']){
+                        $link = str_replace('{alias}',$child['alias'],$i['link']);
+                        $child['link'] = $link;
+                        $child['root'] = $i['parent'];
+                        strpos(request()->getPathInfo(), $link) !== false ? $child['active'] = 'active' : $child['active'] = '';
+                        $menu[$i['id']]['child'][] = $child;
+                    }
                 }
             }
             $menu[$i['id']]['d'] = request()->path();
@@ -91,6 +129,13 @@ class Category extends Model
             strpos(request()->getPathInfo(), $i['link']) !== false ? $menu[$i['id']]['active'] = 'active' : $menu[$i['id']]['active'] = '';
         }
         return $menu;
+    }*/
+
+    public static function searchRootLink($res){
+        $key = array_search($res, array_column(MENU, 'hook'));
+        $parentKey = MENU[$key]['parent'];
+
+        return MENU[$parentKey]['link'];
     }
 
     public static function item($id)

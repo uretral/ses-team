@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class HomeServicesAcc extends Model
 {
     protected $table = 'hasmany_home_services_acc';
+    protected $fillable = ['id'];
 
     public function steps()
     {

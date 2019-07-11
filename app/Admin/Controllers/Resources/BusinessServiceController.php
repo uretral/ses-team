@@ -16,6 +16,8 @@ class BusinessServiceController extends Controller
 {
     use HasResourceActions;
 
+    public $header = 'Услуги для бизнеса';
+
     /**
      * Index interface.
      *
@@ -25,7 +27,7 @@ class BusinessServiceController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Index')
+            ->header($this->header)
             ->description('description')
             ->body($this->grid());
     }
@@ -40,7 +42,7 @@ class BusinessServiceController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('Detail')
+            ->header($this->header)
             ->description('description')
             ->body($this->detail($id));
     }
@@ -55,8 +57,7 @@ class BusinessServiceController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header('Edit')
-            ->description('description')
+            ->header($this->header)
             ->body($this->form()->edit($id));
     }
 
@@ -82,10 +83,23 @@ class BusinessServiceController extends Controller
     protected function grid()
     {
         $grid = new Grid(new BusinessService);
+        $grid->id('ID')->sortable();
+        $grid->alias('alias')->sortable();
+        $grid->name('Название')->sortable();
+        $grid->name_short('Название')->sortable()->editable();
+        $grid->sort('Сортировка')->sortable();
+        $grid->enabled('Активность в меню')->switch()->sortable();
+        $grid->parent()->select(BusinessServiceCategory::all()->pluck('name','id'))->sortable();
 
-        $grid->id('ID');
-        $grid->name('Название');
-        $grid->sort('Сортировка');
+        $grid->filter(function($filter){
+
+            // Remove the default id filter
+            $filter->expand();
+
+            // Add a column filter
+            $filter->like('parent', 'Родитель')->select(BusinessServiceCategory::all()->pluck('name','id'));
+
+        });
 
         return $grid;
     }
@@ -116,19 +130,30 @@ class BusinessServiceController extends Controller
         $form = new Form(new BusinessService);
 
         $form->tab('Настройки', function(Form $form){
+            $states = [
+                'on'  => ['value' => 1, 'text' => 'on', 'color' => 'success'],
+                'off' => ['value' => 0, 'text' => 'off', 'color' => 'danger'],
+            ];
             $form->display('id');
             $form->select('parent', 'Родитель')->options(BusinessServiceCategory::all()->pluck('name','id'));
             $form->alias('alias');
             $form->text('name','Название')->attribute('rel','alias');
+            $form->text('name_short','Название для меню');
             $form->number('sort', 'Сортировка')->default(10);
+            $form->switch('enabled','Активность в меню')->options($states);
         });
         $form->tab('Контент', function(Form $form){
             $form->switch('popular', 'Добавить в популяные в меню');
             $form->switch('left_col', 'Слева');
             $form->switch('right_col', 'Справа');
             $form->textarea('intro');
-            $form->ckeditor('detail');
+            $form->ckeditor('desc');
             $form->image('img');
+        });
+        $form->tab('AIM',function (Form $form){
+            $form->text('aim_heading','A.I.M. - Заголовок');
+            $form->image('aim_img','A.I.M. - картинка');
+            $form->ckeditor('aim_text','A.I.M. - текст');
         });
         $form->tab('Дополнительно', function(Form $form){
             $form->multipleSelect('branches')->options(Branch::all()->pluck('name','id'));
@@ -140,6 +165,28 @@ class BusinessServiceController extends Controller
                 $form->text('name');
                 $form->textarea('text');
             });
+        });
+        $form->tab('Прайс(ы)',function (Form $form){
+            $form->hasMany('prices','прайс', function (Form\NestedForm $form){
+                $form->text('name','заголовок');
+//                $form->textarea('heading','заголовок');
+                $form->ckeditorMany('price','Прайс');
+            });
+
+        });
+        $form->tab('Боковая панель', function(Form $form){
+            $form->html('<h4>Сноска (А вы знаете что?..). У поля текст предпочтение</h4>');
+
+            $form->switch('aside_cite_switcher', 'Включить');
+            $form->image('aside_cite_img', 'картинка')->uniqueName();
+            $form->textarea('aside_cite_text', 'Текст');
+            $form->text('aside_cite_link', 'Ссылка');
+
+            $form->html('<h4>Сноска (Реклама). У поля текст предпочтение</h4>');
+            $form->switch('aside_advert_switcher', 'Включить');
+            $form->image('aside_advert_img', 'картинка')->uniqueName();
+            $form->textarea('aside_advert_text', 'Текст');
+            $form->text('aside_advert_link', 'Ссылка');
         });
         $form->tab('SEO', function(Form $form){
             $form->textarea('seo_title','seo title');
@@ -154,7 +201,7 @@ class BusinessServiceController extends Controller
 
     public function content($alias){
         $data = BusinessService::where('alias',$alias)->firstOrFail();
-        return view('test.index',[
+        return view('resources.business_service',[
             'data' => $data,
             'backend' => ''
         ]);

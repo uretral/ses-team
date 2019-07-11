@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers\Resources;
 
+use App\Models\Resources\BusinessService;
 use App\Models\Resources\Client;
 use App\Models\Resources\Tim;
 use App\Http\Controllers\Controller;
@@ -115,14 +116,23 @@ class TimController extends Controller
     {
         $form = new Form(new Tim);
 
-        $form->tab('Настройки', function(Form $form){
+//        $form->tab('Настройки', function( $form){
             $form->display('ID');
             $form->alias('alias');
 //          $form->select('parent');
             $form->text('name','Название')->attribute('rel','alias');
             $form->number('sort')->default(10);
-        });
-        $form->tab('Превью', function(Form $form){
+            $form->hasMany('helpers',function ($form){
+                $form->text('name');
+                $form->image('img');
+//                $tableSortable->text('col_1');
+//                $tableSortable->text('col_2');
+//                $tableSortable->textarea('col_3');
+//                $tableSortable->multipleSelect('col_4')->options(BusinessService::all()->pluck('name','id'));
+
+            });
+//        });
+/*        $form->tab('Превью', function(Form $form){
 
             $form->image('intro_img','Иконка');
             $form->textarea('introtext','Интро текст');
@@ -139,7 +149,7 @@ class TimController extends Controller
         });
         $form->tab('many', function(Form $form){
             $form->multipleSelect('many','мультиселект')->options(Client::all()->pluck('name','id'));
-        });
+        });*/
 
 
         //$form->display('Created at');

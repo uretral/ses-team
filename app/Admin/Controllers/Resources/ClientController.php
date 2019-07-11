@@ -85,6 +85,7 @@ class ClientController extends Controller
         $grid->id('ID');
         $grid->name('Название');
         $grid->sort('Сортировка');
+        $grid->parent('родитель')->editable();
 
         return $grid;
     }
@@ -124,7 +125,7 @@ class ClientController extends Controller
         $form->tab('Контент', function(Form $form){
             $form->select('parent')->options(Branch::all()->pluck('name','id'));
             $form->textarea('intro', 'Интротекст');
-            $form->ckeditor('text', 'Текст основной');
+            $form->ckeditor('desc', 'Текст основной');
             $form->image('img', 'Иконка');
         });
         return $form;
@@ -132,7 +133,7 @@ class ClientController extends Controller
 
     public function content($alias){
         $data = Client::where('alias',$alias)->firstOrFail();
-        return view('test.index',[
+        return view('resources.client',[
             'data' => $data,
             'backend' => ''
         ]);

@@ -18,7 +18,7 @@ class Image extends File
      *
      * @var string
      */
-    protected $rules = 'image';
+    public $rules = 'image';
 
     /**
      * @param array|UploadedFile $image

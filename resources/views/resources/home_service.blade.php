@@ -43,15 +43,31 @@
                     <div class="wide-boxes-text">
                         {!! $data->desc !!}
 
-                        <div class="price">
-                            <div class="price-header">
-                                {!! $data->price_head !!}
+
+{{--                        @dump($data->prices)--}}
+
+                        @foreach($data->prices as $price)
+                            <div class="price">
+                                <div class="price-header">
+                                   <p> {!! $price->name !!}</p>
+                                </div>
+                                <div class="price-body">
+                                    {!! $price->price !!}
+                                </div>
+                                <div class="price-footer"></div>
                             </div>
-                            <div class="price-body">
-                                {!! $data->price_body !!}
-                            </div>
-                            <div class="price-footer"></div>
-                        </div>
+                            <br/>
+                        @endforeach
+
+{{--                        <div class="price">--}}
+{{--                            <div class="price-header">--}}
+{{--                                {!! $data->price_head !!}--}}
+{{--                            </div>--}}
+{{--                            <div class="price-body">--}}
+{{--                                {!! $data->price_body !!}--}}
+{{--                            </div>--}}
+{{--                            <div class="price-footer"></div>--}}
+{{--                        </div>--}}
 
                     </div>
                 </div>
@@ -59,11 +75,13 @@
         </div>
     </div>
 </main>
-{!! \App\Models\Forms\FormBranches::block() !!}
+@include('blocks.form_home_services')
 <section>
     <div class="half">
         <div class="half-bg">
-            <img src="/storage/{{$data->steps_img}}" alt=""/>
+            <div class="half-bg-img">
+                <img src="/storage/{{$data->steps_img}}" alt=""/>
+            </div>
         </div>
         <div class="half-items">
             <div class="half-item covered">
@@ -115,7 +133,7 @@
                         <h4>{!! $libItem->name !!}</h4>
                         <p>
                             {!! Str::limit($libItem->intro, 150, '...') !!}
-                            <a href="{{$data->alias}}/{{$libItem->alias}}"> Читать далее ></a>
+                            <a href="/articles/{{$libItem->alias}}"> Читать далее ></a>
                         </p>
                     </div>
                 @endforeach
@@ -134,11 +152,21 @@
         </div>
     </div>
 </section>
+@php
+$texted = \App\Models\Blocks\HalfWithText::where('id',1)->first();
+$acces = \App\Models\Blocks\HalfWithAccordion::where('id',4)->first();
+@endphp
+{!! \App\Models\Blocks\HalfWithText::block($texted,'') !!}
+{!! \App\Models\Blocks\HalfWithAccordion::block($acces,'') !!}
 
+
+{{--
 <section>
     <div class="half">
         <div class="half-bg">
-            <img src="../img/guarantee (1).jpg" alt=""/>
+            <div class="half-bg-img">
+                <img src="../img/guarantee (1).jpg" alt=""/>
+            </div>
         </div>
         <div class="half-items">
             <div class="half-item covered">
@@ -158,7 +186,6 @@
                         </li>
                     </ul>
                 </div>
-
             </div>
             <div class="half-item"></div>
         </div>
@@ -168,7 +195,9 @@
 <section>
     <div class="half">
         <div class="half-bg">
-            <img src="../img/tabbed-main.jpg" alt=""/>
+            <div class="half-bg-img">
+                <img src="../img/tabbed-main.jpg" alt=""/>
+            </div>
         </div>
         <div class="half-items">
             <div class="half-item text">
@@ -223,6 +252,7 @@
         </div>
     </div>
 </section>
+--}}
 
 <section>
     <div>
@@ -233,7 +263,7 @@
                     @isset($data->faq)
                         @foreach($data->faq as $faqItem)
                             <li class="links-faqs-item">
-                                <a href="{{$data->alias}}/{{$faqItem->alias}}">{!! $faqItem->name !!}</a>
+                                <a href="/articles/{{$faqItem->alias}}">{!! $faqItem->name !!}</a>
                             </li>
                         @endforeach
                     @endif
@@ -241,12 +271,12 @@
             </div>
 
             <div class="links-more">
-                <h2>{!! $data['lib_heading'] !!}</h2>
+                <h2>{!! $data->lib_heading !!}</h2>
                 <ul class="links-items">
                     @isset($data->common)
                         @foreach($data->common as $other)
                             <li class="links-item">
-                                <a href="{{$data->alias}}/{{$other->alias}}">{!! $other->name !!}</a>
+                                <a href="/articles/{{$other->alias}}">{!! $other->name !!}</a>
                             </li>
                         @endforeach
                     @endif

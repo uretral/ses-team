@@ -65,4 +65,8 @@ class HomeService extends Model
     {
         return Article::find($this->getAttribute('ask'));
     }
+
+    public function prices(){
+        return $this->hasMany(Price::class,'parent');
+    }
 }

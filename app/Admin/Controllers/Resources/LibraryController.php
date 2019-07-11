@@ -81,9 +81,15 @@ class LibraryController extends Controller
     {
         $grid = new Grid(new Library);
 
-        $grid->id('ID');
-        $grid->name('Название');
-        $grid->sort('Сортировка');
+        $grid->id('ID')->sortable();
+        $grid->name('Название')->sortable()->editable();
+        $grid->sort('Сортировка')->sortable()->editable();
+
+        $states = [
+            'on'  => ['value' => 1, 'text' => 'лево', 'color' => 'success'],
+            'off' => ['value' => 2, 'text' => 'право', 'color' => 'danger'],
+        ];
+        $grid->menu_position('Положение')->switch($states);
 
         return $grid;
     }
@@ -114,36 +120,25 @@ class LibraryController extends Controller
     {
         $form = new Form(new Library);
 
-        $form->tab('Настройки', function($form){
-            $form->display('ID');
-            $form->alias('alias');
-//          $form->select('parent');
-            $form->text('name','Название')->attribute('rel','alias');
-            $form->number('sort')->default(10);
-        });
-        $form->tab('Превью', function($form){
-
-            $form->image('intro_img','Иконка');
-            $form->textarea('introtext','Интро текст');
-        });
-        $form->tab('Контент', function($form){
-            $form->image('img','Картинка');
-            $form->ckeditor('content','Текст');
-        });
-        $form->tab('SEO', function($form){
-            $form->textarea('seo_title','seo title');
-            $form->textarea('seo_desc','seo description');
-            $form->textarea('seo_key','seo keywords');
-
-        });
+        $form->display('id');
+        $form->alias('alias');
+        $form->number('sort')->default(10);
+        $form->text('link','Ссылка на ресурс');
+        $states = [
+            'on'  => ['value' => 1, 'text' => 'лево', 'color' => 'success'],
+            'off' => ['value' => 2, 'text' => 'право', 'color' => 'danger'],
+        ];
+        $form->switch('menu_position','Положение ')->states($states);
+        $form->text('name', 'Название')->attribute('rel', 'alias');
 
 
         return $form;
     }
 
-    public function content($alias){
-        $data = Library::where('alias',$alias)->firstOrFail();
-        return view('test.index',[
+    public function content($alias)
+    {
+        $data = Library::where('alias', $alias)->firstOrFail();
+        return view('test.index', [
             'data' => $data,
             'backend' => ''
         ]);

@@ -124,9 +124,10 @@ class BannerController extends Controller
             $form->text('name','Название')->attribute('rel','alias')->rules('required');
         });
 
-        $form->tab('Контент', function($form){
+        $form->tab('Контент', function(Form $form){
             $form->image('img', 'Изображение')->uniqueName();
             $form->textarea('cite','Цитата');
+            $form->switch('timer','Таймер');
         });
 
         //$form->display('Created at');

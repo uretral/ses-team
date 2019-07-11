@@ -314,7 +314,7 @@
                 <option value="index">Index</option>
             </select>
         </td>
-        <td><input type="text" class="form-control" placeholder="default value" name="fields[__index__][default]"></td>
+        <td><input type="text" class="form-control" placeholder="default value" name="fields[__index__][default]" value="__default_value__"></td>
         <td><input type="text" class="form-control" placeholder="comment" name="fields[__index__][comment]"></td>
         <td><a class="btn btn-sm btn-danger table-field-remove"><i class="fa fa-trash"></i> remove</a></td>
     </tr>
@@ -347,76 +347,109 @@ $(function () {
             'name': 'alias',
             'type': 'string',
             'default': true,
+            'defaultValue': '',
         }, {
             'name': 'parent',
             'type': 'integer',
             'default': true,
+            'defaultValue': '',
         }, {
             'name': 'sort',
             'type': 'integer',
             'default': true,
+            'defaultValue': '',
+        },{
+            'name': 'active',
+            'type': 'integer',
+            'default': true,
+            'defaultValue': '',
+        },{
+            'name': 'disabled',
+            'type': 'integer',
+            'default': true,
+            'defaultValue': '',
         },{
             'name': 'menu',
             'type': 'integer',
             'default': true,
+            'defaultValue': '',
+        },{
+            'name': 'menu_position',
+            'type': 'integer',
+            'default': true,
+            'defaultValue': 1,
         },{
             'name': 'name',
             'type': 'string',
             'default': true,
+            'defaultValue': '',
         }, {
             'name': 'intro_img',
             'type': 'string',
             'default': false,
+            'defaultValue': '',
         },{
             'name': 'introtext',
             'type': 'text',
             'default': false,
+            'defaultValue': '',
         },{
             'name': 'img',
             'type': 'string',
             'default': false,
+            'defaultValue': '',
         },{
             'name': 'content',
             'type': 'text',
             'default': false,
+            'defaultValue': '',
         },{
             'name': 'seo_title',
             'type': 'text',
             'default': false,
+            'defaultValue': '',
         },{
             'name': 'seo_desc',
             'type': 'text',
             'default': false,
+            'defaultValue': '',
         },{
             'name': 'seo_key',
             'type': 'text',
             'default': false,
+            'defaultValue': '',
         }],
         'block_controller' : [{
             'name': 'parent',
             'type': 'integer',
             'default': true,
+            'defaultValue': '',
         }, {
             'name': 'name',
             'type': 'string',
             'default': true,
+            'defaultValue': '',
         }, {
             'name': 'nr',
             'type': 'integer',
             'default': true,
+            'defaultValue': '',
         }],
         'block_hasmany' : [{
             'name': 'parent',
             'type': 'integer',
             'default': true,
+            'defaultValue': '',
         }, {
             'name': 'name',
             'type': 'string',
             'default': true,
+            'defaultValue': '',
         }, {
             'name': 'nr',
             'type': 'integer',
             'default': true,
+            'defaultValue': '',
         }],
         'controller' : []
     }
@@ -448,6 +481,7 @@ $(function () {
                 .replace(/__index__/g, $('#table-fields tr').length - 1)
                 .replace(/__name__/g, fields[i].name)
                 .replace(/__type__/g, fields[i].type)
+                .replace(/__default_value__/g, fields[i].defaultValue)
                 .replace(fields[i].default ? /<a class="btn btn-sm btn-danger table-field-remove"><i class="fa fa-trash"><\/i> remove<\/a>/g : '', '')
             );
             $('select').select2();

@@ -3,10 +3,16 @@
 namespace App\Models\Resources;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Resources\Client;
 
 class Branch extends Model
 {
     protected $table = 'resource_branches';
+
+    public function client()
+    {
+        return $this->hasMany(Client::class,'parent');
+    }
 
     public function getPartnersAttribute($value)
     {
@@ -38,6 +44,28 @@ class Branch extends Model
         return Client::find($this->getAttribute('articles'));
     }
 
+
+    Public function getStickerAttribute($sticker)
+    {
+        Return array_values(json_decode($sticker, true) ?: []);
+    }
+
+    Public function setStickerAttribute($sticker)
+    {
+        $this->attributes['sticker'] = json_encode(array_values($sticker),JSON_UNESCAPED_UNICODE);
+    }
+    public function getStickerDataAttribute()
+    {
+        $stickerData = [];
+        foreach ($this->getAttribute('sticker') as $k => $sticker){
+            $res = BusinessService::find($sticker['services'])->sortBy('sort');
+            if($res) {
+                $sticker['services'] = $res;
+                $stickerData[] = $sticker;
+            }
+        }
+        return $stickerData;
+    }
 
     /*    public static function block($data,$b){
             return view('test.index',[

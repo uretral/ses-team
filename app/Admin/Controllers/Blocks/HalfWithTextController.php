@@ -126,6 +126,7 @@ class HalfWithTextController extends Controller
             ];
             $form->image('img','Бэкграунд');
             $form->switch('to_right','Позиция изображения')->states($states);
+            $form->switch('mobile_img','Показывать изображение в мобильной версии');
             $form->text('left_heading','Заголовок слева');
             $form->ckeditor('left_text','Текст слева');
             $form->text('right_heading','Заголовок справа');

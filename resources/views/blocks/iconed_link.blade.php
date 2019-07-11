@@ -2,7 +2,7 @@
 <section>
     <div class="wide">
         <div class="wide-box bb origin">
-            <a class="pest-menu-callback btn scrolled" href="javascript:;"><span>обратный звонок</span></a>
+            <a rel="modal" class="pest-menu-callback btn scrolled" href="javascript:;"><span>обратный звонок</span></a>
             <div class="pest-menu-items">
                 @if($data)
                     @foreach($data as $item)

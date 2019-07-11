@@ -5,6 +5,7 @@ namespace Encore\Admin\Form;
 use Encore\Admin\Admin;
 use Encore\Admin\Form;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 /**
@@ -39,7 +40,6 @@ use Illuminate\Support\Collection;
  * @method Field\Number         number($column, $label = '')
  * @method Field\Currency       currency($column, $label = '')
  * @method Field\HasMany        hasMany($relationName, $callback)
- * @method Field\Sortable       sortable($column, $label = '')
  * @method Field\SwitchField    switch($column, $label = '')
  * @method Field\Display        display($column, $label = '')
  * @method Field\Rate           rate($column, $label = '')
@@ -50,6 +50,8 @@ use Illuminate\Support\Collection;
  * @method Field\Tags           tags($column, $label = '')
  * @method Field\Icon           icon($column, $label = '')
  * @method Field\Embeds         embeds($column, $label = '')
+ * @method Field\CKEditorMany   ckeditorMany($column, $label = '')
+ *
  */
 class NestedForm
 {
@@ -58,6 +60,11 @@ class NestedForm
     const REMOVE_FLAG_NAME = '_remove_';
 
     const REMOVE_FLAG_CLASS = 'fom-removed';
+
+    /**
+     * @var mixed
+     */
+    protected $key;
 
     /**
      * @var string
@@ -125,8 +132,32 @@ class NestedForm
     public function getKey()
     {
         if ($this->model) {
-            return $this->model->getKey();
+            $key = $this->model->getKey();
         }
+
+        if (!is_null($this->key)) {
+            $key = $this->key;
+        }
+
+        if (isset($key)) {
+            return $key;
+        }
+
+        return 'new_'.static::DEFAULT_KEY_NAME;
+    }
+
+    /**
+     * Set key for current form.
+     *
+     * @param mixed $key
+     *
+     * @return $this
+     */
+    public function setKey($key)
+    {
+        $this->key = $key;
+
+        return $this;
     }
 
     /**
@@ -161,17 +192,21 @@ class NestedForm
      *
      * @return $this
      */
-    public function setOriginal($data, $relatedKeyName)
+    public function setOriginal($data, $relatedKeyName = null)
     {
         if (empty($data)) {
             return $this;
         }
 
-        foreach ($data as $value) {
+        foreach ($data as $key => $value) {
             /*
              * like $this->original[30] = [ id = 30, .....]
              */
-            $this->original[$value[$relatedKeyName]] = $value;
+            if ($relatedKeyName) {
+                $key = $value[$relatedKeyName];
+            }
+
+            $this->original[$key] = $value;
         }
 
         return $this;
@@ -245,10 +280,10 @@ class NestedForm
             if (($field instanceof \Encore\Admin\Form\Field\Hidden) || $value != $field->original()) {
                 if (is_array($columns)) {
                     foreach ($columns as $name => $column) {
-                        array_set($prepared, $column, $value[$name]);
+                        Arr::set($prepared, $column, $value[$name]);
                     }
                 } elseif (is_string($columns)) {
-                    array_set($prepared, $columns, $value);
+                    Arr::set($prepared, $columns, $value);
                 }
             }
         }
@@ -269,16 +304,16 @@ class NestedForm
     protected function fetchColumnValue($data, $columns)
     {
         if (is_string($columns)) {
-            return array_get($data, $columns);
+            return Arr::get($data, $columns);
         }
 
         if (is_array($columns)) {
             $value = [];
             foreach ($columns as $name => $column) {
-                if (!array_has($data, $column)) {
+                if (!Arr::has($data, $column)) {
                     continue;
                 }
-                $value[$name] = array_get($data, $column);
+                $value[$name] = Arr::get($data, $column);
             }
 
             return $value;
@@ -364,7 +399,7 @@ class NestedForm
 
         $elementName = $elementClass = $errorKey = [];
 
-        $key = $this->getKey() ?: 'new_'.static::DEFAULT_KEY_NAME;
+        $key = $this->getKey();
 
         if (is_array($column)) {
             foreach ($column as $k => $name) {
@@ -394,7 +429,7 @@ class NestedForm
     public function __call($method, $arguments)
     {
         if ($className = Form::findFieldClass($method)) {
-            $column = array_get($arguments, 0, '');
+            $column = Arr::get($arguments, 0, '');
 
             /* @var Field $field */
             $field = new $className($column, array_slice($arguments, 1));

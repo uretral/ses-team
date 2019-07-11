@@ -21,7 +21,7 @@
 
                 </mark>
 
-                <a class="btn" href="javascript:"><span>GET STARTED</span></a>
+                <a class="btn" href="{{MENU[22]['link']}}"><span>Больше</span></a>
             </div>
             <div class="hr"></div>
         </div>

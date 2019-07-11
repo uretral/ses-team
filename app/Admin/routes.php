@@ -22,6 +22,7 @@ Route::group([
 
     $router->resource('blocks', 'BlockController');
     $router->resource('resources', 'ResourceController');
+    $router->resource('region', SiteController::class);
 
     if(strpos(Request::instance()->path(),'admin/static/') !== false){
         $block = \App\Models\Block::where('url',request()->segment(3))->first();

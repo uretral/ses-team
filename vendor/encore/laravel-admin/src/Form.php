@@ -44,6 +44,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @method Field\Map            map($latitude, $longitude, $label = '')
  * @method Field\Editor         editor($column, $label = '')
  * @method Field\CKEditor       ckeditor($column, $label = '')
+ * @method Field\CKEditorMany   ckeditorMany($column, $label = '')
  * @method Field\File           file($column, $label = '')
  * @method Field\Image          image($column, $label = '')
  * @method Field\Date           date($column, $label = '')
@@ -65,6 +66,8 @@ use Symfony\Component\HttpFoundation\Response;
  * @method Field\Decimal        decimal($column, $label = '')
  * @method Field\Html           html($html, $label = '')
  * @method Field\Tags           tags($column, $label = '')
+ * @method Field\Table          table($column, $label, $builder)
+ * @method Field\TableSortable  tableSortable($column, $label, $builder)
  * @method Field\Icon           icon($column, $label = '')
  * @method Field\Embeds         embeds($column, $label = '')
  * @method Field\MultipleImage  multipleImage($column, $label = '')
@@ -1509,6 +1512,7 @@ class Form implements Renderable
             'embeds'         => Field\Embeds::class,
             'editor'         => Field\Editor::class,
             'ckeditor'       => Field\CKEditor::class,
+            'ckeditorMany'       => Field\CKEditorMany::class,
             'email'          => Field\Email::class,
             'file'           => Field\File::class,
             'hasMany'        => Field\HasMany::class,
@@ -1531,6 +1535,8 @@ class Form implements Renderable
             'textarea'       => Field\Textarea::class,
             'time'           => Field\Time::class,
             'timeRange'      => Field\TimeRange::class,
+            'table'          => Field\Table::class,
+            'tableSortable'  => Field\TableSortable::class,
             'url'            => Field\Url::class,
             'year'           => Field\Year::class,
             'html'           => Field\Html::class,

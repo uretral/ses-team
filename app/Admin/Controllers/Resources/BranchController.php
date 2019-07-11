@@ -4,6 +4,7 @@ namespace App\Admin\Controllers\Resources;
 
 use App\Models\Resources\Branch;
 use App\Http\Controllers\Controller;
+use App\Models\Resources\BusinessService;
 use App\Models\Resources\Client;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -120,6 +121,7 @@ class BranchController extends Controller
             $form->alias('alias');
             $form->text('name','Название')->attribute('rel','alias');
             $form->textarea('intro', 'Интротекст')->default('');
+            $form->textarea('longtitle', 'Длинный заголовок')->default('');
             $form->ckeditor('desc', 'Текст основной')->default('');
             $form->image('img', 'Иконка');
 
@@ -149,11 +151,22 @@ class BranchController extends Controller
             $form->multipleSelect('articles','Статьи')->options(\App\Models\Resources\Article::all()->pluck('name','id'));
             $form->ckeditor('price','Цены');
             $form->ckeditor('warranty','Гарантия');
-            $form->image('sign','Знак')->uniqueName();
-            $form->ckeditor('sign_text','Знак - текст');
+        });
+
+        $form->tab('AIM',function (Form $form){
             $form->text('aim_heading','A.I.M. - Заголовок');
             $form->image('aim_img','A.I.M. - картинка');
             $form->ckeditor('aim_text','A.I.M. - текст');
+        });
+
+        $form->tab('Стикер', function($form){
+            $form->text('sticker_heading','Оглавление раздела (Опционально)');
+            $form->tableSortable('sticker',function ( $table){
+                $table->textarea('name','Название раздела');
+                $table->textarea('text','Краткое описание (Опционально - замещает краткое описание услуги)');
+                $table->multipleSelect('services','Услуги')->options(BusinessService::all()->pluck('name','id'));
+            });
+
         });
         $form->tab('SEO', function(Form $form){
             $form->textarea('seo_title','seo title');
@@ -161,6 +174,7 @@ class BranchController extends Controller
             $form->textarea('seo_key','seo keywords');
 
         });
+
 
 
         return $form;

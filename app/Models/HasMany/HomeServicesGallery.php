@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
 class HomeServicesGallery extends Model
 {
     protected $table = 'hasmany_home_services_gallery';
+    protected $fillable = ['id'];
 
     public function gallery()
     {

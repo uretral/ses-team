@@ -171,6 +171,16 @@ class HomeServiceController extends Controller
             $form->text('cite_heading', 'Заголовок');
             $form->textarea('cite_text', 'Текст');
         });
+
+        $form->tab('Прайс(ы)',function (Form $form){
+            $form->hasMany('prices','прайс', function (Form\NestedForm $form){
+                $form->text('name','заголовок');
+//                $form->textarea('heading','заголовок');
+                $form->ckeditorMany('price','Прайс');
+            });
+
+        });
+
         $form->tab('F.A.Q.', function(Form $form){
             $form->text('lib_heading','Общий заголовок (внизу справа)');
             $form->multipleSelect('lib','Общие статьи')->options(Article::all()->pluck('name', 'id'));

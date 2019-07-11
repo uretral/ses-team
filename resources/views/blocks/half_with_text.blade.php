@@ -1,8 +1,9 @@
 @extends('tpl.backend')
+
 <section>
-    <div class="half">
+    <div class="half @if(!$data->mobile_img) no-image @endif">
         <div class="half-bg">
-            <div class="half-bg-img">
+            <div class="half-bg-img @if($data->to_right) right @endif">
                 <img src="/storage/{{$data->img}}" alt=""/>
             </div>
         </div>

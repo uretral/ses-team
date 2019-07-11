@@ -2,7 +2,7 @@
 <ul class="main_nav">
 
     <li class="root">
-        <a href="{{MENU[8]['link']}}"><span>Сферы бизнеса</span></a>
+        <a class="{{MENU[8]['active']}}" href="javascript:"><span>Сферы бизнеса</span></a>
         <ul class="sub-menu">
 
             <li>
@@ -10,7 +10,7 @@
                     @foreach(MENU[10]['child'] as $branchKey => $branch)
                         @if(($branchKey % 2) == 0)
                             <li>
-                                <a href="{{$branch['link']}}">{{$branch['name']}}</a>
+                                <a class="{{$branch['active']}}" href="{{$branch['link']}}">{{$branch['name']}}</a>
                             </li>
                         @endif
                     @endforeach
@@ -21,7 +21,7 @@
                     @foreach(MENU[10]['child'] as $branchKey => $branch)
                         @if(($branchKey % 2) != 0)
                             <li>
-                                <a href="{{$branch['link']}}">{{$branch['name']}}</a>
+                                <a class="{{$branch['active']}}" href="{{$branch['link']}}">{{$branch['name']}}</a>
                             </li>
                         @endif
                     @endforeach
@@ -32,80 +32,84 @@
     </li>
 
     <li class="root">
-        <a href="{{MENU[9]['link']}}"><span>Наши услуги</span></a>
+        <a class="{{MENU[9]['active']}}" href="javascript:"><span>Наши услуги</span></a>
+        <ul class="sub-menu">
+            @php
+                $arPos = [];
+                foreach (MENU[21]['child'] as $position){
+                $arPos[$position['menu_position']][] = $position;
+                }
+                ksort($arPos)
+            @endphp
+
+            @foreach($arPos as $posKey => $servicesCategories)
+                <li>
+                    <ul class="sub-menu-level">
+
+                @foreach($servicesCategories as $category)
+                                @php
+                                    $arChild = [];
+                                    foreach (MENU[11]['child'] as $child)
+                                    if($child['parent'] == $category['id']){
+                                    $arChild[] = $child;
+                                    }
+                                @endphp
+
+                            <h4>{{$category['name']}}</h4>
+                                <li class="underlined">
+                            <li class="sub-menu-double">
+                                <ul class="sub-menu-vertical">
+
+                                    @foreach($arChild as $k => $service)
+                                        @if($service['parent'] == $category['id'])
+                                            <li>
+                                                <a class="{{$service['active']}}" href="{{$service['link']}}">
+                                                    @isset($service['name_short'])
+                                                        {{$service['name_short']}}
+                                                    @endisset
+                                                </a>
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                </ul>
+                            </li>
+
+                @endforeach
+                    </ul>
+                </li>
+            @endforeach
+
+        </ul>
+
+    </li>
+
+
+    <li class="root">
+        <a class="{{MENU[22]['active']}}" href="{{MENU[22]['link']}}"><span>{{MENU[22]['name']}}</span></a>
+
         <ul class="sub-menu">
             <li>
-{{--                <h4>Вредители</h4>--}}
-
-                    <ul class="sub-menu-level">
-{{--                        @foreach($servicesTree as $category)
-                            @if($category['main'])
-                                <li class="underlined">
-                                    {{$category['name']}}
-                                </li>
-                                <li class="sub-menu-double">
-                                    <ul class="sub-menu-vertical">
-                                        @php $servicesLeft = 0; @endphp
-                                        @php $servicesRight = 0; @endphp
-
-                                        @foreach($category['child'] as $service)
-                                            @if($service['parent'] == $category['id'] && $servicesLeft % 2 == 0)
-                                                <li><a href="{{$servicesRoot}}/{{$service['alias']}}">{{$service['name']}}</a></li>
-                                            @endif
-                                                @php $servicesLeft++ @endphp
-                                        @endforeach
-                                    </ul>
-
-                                    <ul class="sub-menu-vertical">
-                                        @foreach($category['child'] as $service)
-                                            @if($service['parent'] == $category['id'] && $servicesRight % 2 != 0)
-                                                <li><a href="{{$servicesRoot}}/{{$service['alias']}}">{{$service['name']}}</a></li>
-                                            @endif
-                                                @php $servicesRight++ @endphp
-                                        @endforeach
-                                    </ul>
-                                </li>
-                            @endif
-                        @endforeach--}}
-                    </ul>
-
-
-            </li>
-            <li>
-                <h4>Документы для СЭС</h4>
                 <ul class="sub-menu-level">
-{{--                    @foreach($servicesTree as $category)
-                        @if(!$category['main'])
-                            @foreach($category['child'] as $service)
-
-                                    <li><a href="{{$servicesRoot}}/{{$service['alias']}}">{{$service['name']}}</a></li>
-                            @endforeach
+                    <h4>Стикер SESTEAM</h4>
+                    @foreach(MENU as  $sticker)
+                        @if($sticker['parent']  == 22)
+                            <li>
+                                <a class="{{$sticker['active']}}" href="{{$sticker['link']}}">{{$sticker['name']}}</a>
+                            </li>
                         @endif
-                    @endforeach--}}
+                    @endforeach
                 </ul>
-            </li>
-            <li>
-                <h4>Популярные услуги</h4>
-
-                <ul class="sub-menu-level">
-{{--                    @foreach($services as $service)
-                        @if($service['popular'])
-                            <li><a href="{{$servicesRoot}}/{{$service['alias']}}">{{$service['name']}}</a></li>
-                        @endif
-                    @endforeach--}}
-                </ul>
-            </li>
         </ul>
     </li>
 
 
     <li>
-        <a href="{{MENU[12]['link']}}"><span>{{MENU[12]['name']}}</span></a>
+        <a class="{{MENU[12]['active']}}" href="{{MENU[12]['link']}}"><span>{{MENU[12]['name']}}</span></a>
     </li>
 {{--    <li>--}}
 {{--        <a href="{{\App\Menu::root(7)}}"><span>Библиотека</span></a>--}}
 {{--    </li>--}}
     <li>
-        <a href="{{MENU[7]['link']}}"><span>{{MENU[7]['name']}}</span></a>
+        <a class="{{MENU[7]['active']}}" href="{{MENU[7]['link']}}"><span>{{MENU[7]['name']}}</span></a>
     </li>
 </ul>

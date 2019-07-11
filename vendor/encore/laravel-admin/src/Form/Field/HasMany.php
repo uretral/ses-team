@@ -55,6 +55,7 @@ class HasMany extends Field
         'default' => 'admin::form.hasmany',
         'tab'     => 'admin::form.hasmanytab',
         'table'   => 'admin::form.hasmanytable',
+        'tablesortable'   => 'admin::form.hasmanytablesortable',
     ];
 
     /**
@@ -557,6 +558,47 @@ EOT;
         Admin::script($script);
     }
 
+
+    /**
+     * @param $templateScript
+     *
+     */
+
+    protected function setupScriptForTablesortableView($templateScript)
+    {
+        $removeClass = NestedForm::REMOVE_FLAG_CLASS;
+        $defaultKey = NestedForm::DEFAULT_KEY_NAME;
+
+        /**
+         * When add a new sub form, replace all element key in new sub form.
+         *
+         * @example comments[new___key__][title]  => comments[new_{index}][title]
+         *
+         * {count} is increment number of current sub form count.
+         */
+        $script = <<<EOT
+var index = 0;
+$('#has-many-{$this->column}').on('click', '.add', function () {
+
+    var tpl = $('template.{$this->column}-tpl');
+
+    index++;
+
+    var template = tpl.html().replace(/{$defaultKey}/g, index);
+    $('.has-many-{$this->column}-forms').append(template);
+    {$templateScript}
+});
+
+$('#has-many-{$this->column}').on('click', '.remove', function () {
+    $(this).closest('.has-many-{$this->column}-form').hide();
+    $(this).closest('.has-many-{$this->column}-form').find('.$removeClass').val(1);
+});
+
+EOT;
+
+        Admin::script($script);
+    }
+
     /**
      * Disable create button.
      *
@@ -593,6 +635,9 @@ EOT;
         if ($this->viewMode == 'table') {
             return $this->renderTable();
         }
+        if ($this->viewMode == 'tablesortable') {
+            return $this->renderTableSortable();
+        }
 
         // specify a view to render.
         $this->view = $this->views[$this->viewMode];
@@ -626,6 +671,60 @@ EOT;
 
         /* @var Field $field */
         foreach ($this->buildNestedForm($this->column, $this->builder)->fields() as $field) {
+
+            if (is_a($field, Hidden::class)) {
+                $hidden[] = $field->render();
+            } else {
+                /* Hide label and set field width 100% */
+                $field->setLabelClass(['hidden']);
+                $field->setWidth(12, 0);
+                $fields[] = $field->render();
+                $headers[] = $field->label();
+            }
+
+            /*
+             * Get and remove the last script of Admin::$script stack.
+             */
+            if ($field->getScript()) {
+                $scripts[] = array_pop(Admin::$script);
+            }
+        }
+
+        /* Build row elements */
+        $template = array_reduce($fields, function ($all, $field) {
+            $all .= "<td>{$field}</td>";
+
+            return $all;
+        }, '');
+
+        /* Build cell with hidden elements */
+        $template .= '<td class="hidden">'.implode('', $hidden).'</td>';
+
+        $this->setupScript(implode("\r\n", $scripts));
+
+        // specify a view to render.
+        $this->view = $this->views[$this->viewMode];
+
+        return parent::render()->with([
+            'headers'      => $headers,
+            'forms'        => $this->buildRelatedForms(),
+            'template'     => $template,
+            'relationName' => $this->relationName,
+            'options'      => $this->options,
+        ]);
+    }
+
+    protected function renderTableSortable()
+    {
+        $headers = [];
+        $fields = [];
+        $hidden = [];
+        $scripts = [];
+
+        /* @var Field $field */
+        foreach ($this->buildNestedForm($this->column, $this->builder)->fields() as $field) {
+
+
             if (is_a($field, Hidden::class)) {
                 $hidden[] = $field->render();
             } else {
