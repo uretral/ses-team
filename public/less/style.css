@@ -1641,8 +1641,7 @@ header {
   }
 }
 .header-nav-info {
-  display: flex;
-  justify-content: flex-end;
+  text-align: right;
   height: 38px;
   background-color: #444;
 }
@@ -1910,7 +1909,7 @@ ul.main_nav > li.root > ul {
   display: none;
 }
 ul.main_nav > li:hover > ul {
-  display: flex;
+  display: flex!important;
 }
 ul.main_nav > li:hover:after {
   transform: rotate(180deg);
@@ -3226,15 +3225,15 @@ ul.sub-menu-vertical > li a {
   overflow: hidden;
   margin: 0 5px;
 }
-.footer-links_socials li a.facebook {
+.footer-links_socials li a.Facebook {
   background: url("../img/facebook-svg.png");
   background-size: 100%;
 }
-.footer-links_socials li a.youtube {
+.footer-links_socials li a.Youtube {
   background: url("../img/youtube.png");
   background-size: 100%;
 }
-.footer-links_socials li a.twitter {
+.footer-links_socials li a.Twitter {
   background: url("../img/twitter-svg.png");
   background-size: 100%;
 }
@@ -3378,6 +3377,11 @@ ul.sub-menu-vertical > li a {
   margin-top: 20px;
   white-space: nowrap;
   margin-right: 10px;
+}
+@media screen and (max-width: 780px) {
+  .breadcrumbs {
+    display: none;
+  }
 }
 .breadcrumbs-box {
   height: 40px;
@@ -3776,11 +3780,17 @@ ul.sub-menu-vertical > li a {
 @media screen and (max-width: 960px) {
   .detail-contrast-body td p {
     white-space: nowrap;
+    font-size: 13px;
+  }
+}
+@media screen and (max-width: 960px) {
+  .detail-contrast-body td {
+    font-size: 13px;
   }
 }
 @media screen and (max-width: 960px) {
   .detail-contrast-body td:first-of-type p {
-    font-size: 22px;
+    font-size: 13px;
     white-space: initial;
   }
 }
@@ -3790,12 +3800,22 @@ ul.sub-menu-vertical > li a {
   text-align: center;
   font-size: 30px;
 }
+@media screen and (max-width: 960px) {
+  .detail-contrast-body tr:first-of-type td {
+    font-size: 30px;
+  }
+}
 .detail-contrast-body tr:first-of-type td p {
   padding: 0;
   font-family: "Bebas Neue", sans-serif;
   font-weight: bold;
   text-align: center;
   font-size: 30px;
+}
+@media screen and (max-width: 960px) {
+  .detail-contrast-body tr:first-of-type td p {
+    font-size: 20px;
+  }
 }
 .detail-contrast-footer {
   height: 20px;
@@ -4364,6 +4384,11 @@ ul.sub-menu-vertical > li a {
   margin-right: 0px;
   width: calc(50% - 0px);
 }
+@media screen and (max-width: 960px) {
+  .listing-item {
+    width: calc(100% - 0px);
+  }
+}
 .listing-item b {
   display: block;
   padding: 6px 0;
@@ -4561,7 +4586,6 @@ ul.sub-menu-vertical > li a {
   margin-left: 0px;
   margin-right: 0px;
   width: calc(25% - 0px);
-  border-right: 2px solid #444;
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -4742,7 +4766,14 @@ ul.sub-menu-vertical > li a {
 @media screen and (max-width: 960px) {
   .price-body td,
   .price-body th {
+    font-size: 13px;
+  }
+}
+@media screen and (max-width: 960px) {
+  .price-body td,
+  .price-body th {
     white-space: nowrap;
+    font-size: 13px;
   }
 }
 .price-body td p,
@@ -4752,11 +4783,23 @@ ul.sub-menu-vertical > li a {
   font-size: 17px;
   font-weight: bold;
 }
+@media screen and (max-width: 960px) {
+  .price-body td p,
+  .price-body th p {
+    font-size: 13px;
+    white-space: initial;
+  }
+}
 .price-body tr:first-of-type td {
   font-family: "Bebas Neue", sans-serif;
   font-weight: bold;
   text-align: center;
   font-size: 30px;
+}
+@media screen and (max-width: 960px) {
+  .price-body tr:first-of-type td {
+    font-size: 20px!important;
+  }
 }
 .price-body tr:first-of-type td p {
   padding: 0;
@@ -4764,6 +4807,11 @@ ul.sub-menu-vertical > li a {
   font-weight: bold;
   text-align: center;
   font-size: 30px;
+}
+@media screen and (max-width: 960px) {
+  .price-body tr:first-of-type td p {
+    font-size: 20px;
+  }
 }
 .price-footer {
   height: 20px;
@@ -4922,6 +4970,11 @@ ul.sub-menu-vertical > li a {
 .feedback-form h3 {
   margin-top: 7px;
 }
+.feedback-form p {
+  display: inline;
+  padding: 0;
+  color: red;
+}
 .table {
   width: 100%;
   display: flex;
@@ -4933,6 +4986,11 @@ ul.sub-menu-vertical > li a {
 }
 .table:first-of-type {
   margin-top: 24px;
+}
+@media screen and (max-width: 960px) {
+  .table {
+    border: none;
+  }
 }
 .table-header {
   box-sizing: border-box;
@@ -4972,6 +5030,16 @@ ul.sub-menu-vertical > li a {
   width: calc(25% - 0px);
   border-left: 1px solid #0a0a0a;
 }
+@media screen and (max-width: 960px) {
+  .table-col {
+    width: calc(100% - 0px);
+  }
+}
+@media screen and (max-width: 960px) {
+  .table-col {
+    border: none;
+  }
+}
 .table-col img {
   display: block;
 }
@@ -4985,6 +5053,11 @@ ul.sub-menu-vertical > li a {
 }
 .table-txt h3 {
   color: #be0005;
+}
+@media screen and (max-width: 960px) {
+  .table-txt h3 {
+    font-size: 24px;
+  }
 }
 .table-txt li {
   display: block;

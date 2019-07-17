@@ -28,6 +28,9 @@
                     </div>
                 @endforeach
 
+                @if($data->show_sticker)
+                    {!! \App\Models\Forms\FormSticker::block() !!}
+                @endif
 
                 @isset($data->branchesArray)
                     <h2 class="inner">Сферы бизнеса</h2>

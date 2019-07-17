@@ -12,7 +12,6 @@
                 <input type="tel" placeholder="Телефон" name="phone"/>
                 <button class="black" type="submit"><span>Отправить</span></button>
             </form>
-
         </div>
         <div class="schedule-footer"></div>
     </div>

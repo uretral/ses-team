@@ -153,6 +153,7 @@ class HomeServiceController extends Controller
             $form->html('<h3>Блок Шаги с фото</h3>');
             $form->ckeditor('steps_text', 'Шаги текст');
             $form->image('steps_img', 'Фото')->uniqueName();
+            $form->switch('mobile_img', 'Фото в мобильном');
 
             $form->hasMany('steps', function (Form\NestedForm $form) {
                 $form->text('title','Заголовок');

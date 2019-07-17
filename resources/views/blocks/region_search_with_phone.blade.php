@@ -10,11 +10,10 @@
 				</label>
 				<ul class="regions-list"></ul>
 			</div>--}}
-
 			<select rel="region-links" class="simple wider">
-				@foreach(\App\Admin\Controllers\SiteController::regions() as $region)
-					<option @if(request()->root() == $region->url) selected @endif value="{{$region->url}}">{{$region['region']}}</option>
-				@endforeach
+                @foreach(\App\Admin\Controllers\SiteController::regions() as $region)
+                    <option  @if(is_numeric(strpos(request()->getHost(),$region->url))) selected @endif value="{{$region->url}}">{{$region['region']}}</option>
+                @endforeach
 			</select>
 
 			<span>Или позвоните: <em>{{REGION['phone']}}</em></span>

@@ -7,7 +7,7 @@
             <img src="/img/sticker-02.png" alt="sticker"/>
         </div>
         <div class="detail-sticker-btn">
-            <a href="javascript:">
+            <a href="{{MENU[23]['link']}}">
                 <span>заявка на стикер</span>
             </a>
         </div>

@@ -4,7 +4,7 @@
 
     <select rel="region-links" class="simple">
         @foreach(\App\Admin\Controllers\SiteController::regions() as $region)
-            <option @if(request()->getHost() == $region->url) selected @endif value="{{$region->url}}">{{$region['region']}}</option>
+            <option  @if(is_numeric(strpos(request()->getHost(),$region->url))) selected @endif value="{{$region->url}}">{{$region['region']}}</option>
         @endforeach
     </select>
      <br/>
@@ -13,12 +13,19 @@
     <div rel="region"></div>
 </div>
 <div class="aside-call">
-    <h3>Беспокоят насекомые?</h3>
+    @empty($data->aside_thing)
+        <h3>Беспокоят насекомые?</h3>
+    @endempty
+    @empty(!$data->aside_thing)
+        <h3>{{$data->aside_thing}}</h3>
+    @endempty
+
+
     <p class="tel">
         Позвоните нам: <span>{{REGION['phone']}}</span>
     </p>
     <p>
-        Или отправьте нам заявку, мы перезвоним Вам в течении 5ти минут:
+        Или отправьте нам заявку, мы перезвоним Вам в течение 5ти минут:
     </p>
 
     <form action="javascript:" id="aside_form">
@@ -73,7 +80,7 @@
 @endif
 
 <div class="aside-sticker-banner">
-    <h3><a href="{{MENU[22]['link']}}">Узнать больше</a></h3>
+    <h3><a href="{{MENU[25]['link']}}">Узнать больше</a></h3>
     <img src="/img/sticker-shadowed.png" alt="sticker"/>
 </div>
 

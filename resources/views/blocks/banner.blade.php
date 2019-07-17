@@ -8,6 +8,7 @@
 					{!! $data->cite !!}
 				</cite>
 			</div>
+{{--
 
 			@if($data->timer)
 				<div id="clock">
@@ -19,6 +20,7 @@
 					</div>
 				</div>
 			@endif
+--}}
 
 		</div>
 	</div>

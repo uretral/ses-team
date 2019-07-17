@@ -142,6 +142,7 @@ class ArticleController extends Controller
             $form->image('aside_advert_img', 'картинка')->uniqueName();
             $form->textarea('aside_advert_text', 'Текст');
             $form->text('aside_advert_link', 'Ссылка');
+            $form->text('aside_thing', 'насекомые?');
         });
         $form->tab('SEO', function($form){
             $form->textarea('seo_title','seo title');

@@ -53,7 +53,7 @@
                                 </div>
 
                                 <b>{{$partner->name}}</b>
-                                {!! $partner->intro !!}
+                                {{Str::limit($partner->intro, 100, '...')}}
                                 <a href="{{MENU['12']['link']}}/{{$partner->alias}}">Читать далее</a>
                             </div>
                         @endforeach
@@ -69,18 +69,21 @@
                         @endforeach
                     </div>
                 @endif
+                @empty(!$data->prices)
+                    @foreach($data->prices as $prices)
+                        <div class="detail-contrast">
+                            <div class="detail-contrast-header">
+                                <p>{{$prices->name}}</p>
+                            </div>
+                            <div class="detail-contrast-body">
+                                {!! $prices->text !!}
+                            </div>
+                            <div class="detail-contrast-footer"></div>
+                        </div>
+                    @endforeach
+                @endempty
 
-                @isset($data->price)
-                    <div class="detail-contrast">
-                        <div class="detail-contrast-header">
-                            <p>Прайс-лист</p>
-                        </div>
-                        <div class="detail-contrast-body">
-                            {!! $data->price !!}
-                        </div>
-                        <div class="detail-contrast-footer"></div>
-                    </div>
-                @endisset
+
 
                 @isset($data->warranty)
                     <div class="detail-contrast">

@@ -10,6 +10,7 @@ class ContactController extends Controller
 {
     public function send(Request $request)
     {
+
         $result = false;
 
         if($request->ajax() && !empty($request->all()))

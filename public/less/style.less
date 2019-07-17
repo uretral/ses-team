@@ -219,11 +219,9 @@ header {
     background-color: @transparency-white;
 
     &-info {
-      display: flex;
-      justify-content: flex-end;
+      text-align: right;
       height: 38px;
       background-color: @brown-deep;
-
       a, label {
         display: inline-flex;
         height: 100%;
@@ -517,7 +515,7 @@ ul.main_nav {
 
     &:hover {
       > ul {
-        display: flex;
+        display: flex!important;
       }
 
       &:after {
@@ -766,6 +764,7 @@ ul.sub-menu {
   height: 161px;
   .md-block({
     height: 85px;
+    //height: 0;
   });
 }
 
@@ -1837,17 +1836,17 @@ ul.sub-menu {
           overflow: hidden;
           margin: 0 5px;
 
-          &.facebook {
+          &.Facebook {
             background: url("../img/facebook-svg.png");
             background-size: 100%
           }
 
-          &.youtube {
+          &.Youtube {
             background: url("../img/youtube.png");
             background-size: 100%
           }
 
-          &.twitter {
+          &.Twitter {
             background: url("../img/twitter-svg.png");
             background-size: 100%
           }
@@ -2000,6 +1999,9 @@ ul.sub-menu {
 }
 
 .breadcrumbs {
+  .sm-block({
+    display: none;
+  });
   &-box {
     height: 40px;
     justify-content: flex-start;
@@ -2355,6 +2357,7 @@ ul.sub-menu {
           font-weight: bold;
           .md-block({
             white-space: nowrap;
+            font-size: 13px;
 
           });
         }
@@ -2363,11 +2366,14 @@ ul.sub-menu {
           font-family: Aleo;
           font-size: 17px;
         font-weight: bold;
+        .md-block({
+          font-size: 13px;
+        });
 
         &:first-of-type {
           p {
             .md-block({
-              font-size: 22px;
+              font-size: 13px;
 
               white-space: initial;
             });
@@ -2383,11 +2389,17 @@ ul.sub-menu {
             .headingsBold;
             text-align: center;
             font-size: 30px;
+            .md-block({
+              font-size: 30px;
+            });
             p {
               padding: 0;
               .headingsBold;
               text-align: center;
               font-size: 30px;
+              .md-block({
+                font-size: 20px;
+              });
 
             }
           }
@@ -2946,6 +2958,7 @@ ul.sub-menu {
     .padding-half-top-bottom;
     .col();
     .size(6);
+    .size-md(12);
     b {
       display: block;
       padding: 6px 0;
@@ -3123,7 +3136,7 @@ ul.sub-menu {
     .col();
     .size(3);
     .size-md(12);
-    border-right: 2px solid @brown-deep;
+    //border-right: 2px solid @brown-deep;
     .padding-half;
 
     display: flex;
@@ -3297,16 +3310,24 @@ ul.sub-menu {
       color: @white;
       font-family: Aleo;
       font-size: 17px;
+      .md-block({
+        font-size: 13px;
+      });
       font-weight: bold;
+
       .md-block({
         white-space: nowrap;
-
+        font-size: 13px;
       });
       p {
         padding: 0;
         font-family: Aleo;
         font-size: 17px;
         font-weight: bold;
+        .md-block({
+          font-size: 13px;
+          white-space: initial;
+        });
       }
     }
 
@@ -3316,11 +3337,19 @@ ul.sub-menu {
           .headingsBold;
           text-align: center;
           font-size: 30px;
+          .md-block({
+            font-size: 20px!important;
+          });
+
           p {
             padding: 0;
             .headingsBold;
             text-align: center;
             font-size: 30px;
+            .md-block({
+              font-size: 20px;
+            });
+
           }
         }
       }
@@ -3483,6 +3512,11 @@ ul.sub-menu {
     h3 {
       margin-top: 7px;
     }
+    p {
+      display: inline;
+      padding: 0;
+      color: @red;
+    }
   }
 }
 
@@ -3503,6 +3537,10 @@ ul.sub-menu {
   &:first-of-type {
     margin-top: 24px;
   }
+  .md-block({
+    border: none;
+
+  });
 
 
   &-header {
@@ -3538,7 +3576,13 @@ ul.sub-menu {
   &-col {
     .col();
     .size(3);
+    .size-md(12);
+
     border-left: 1px solid @black-matte;
+    .md-block({
+      border: none;
+
+    });
     img {
       display: block;
     }
@@ -3553,6 +3597,9 @@ ul.sub-menu {
     font-size: 16px;
     h3 {
       color: @red-main;
+      .md-block({
+        font-size: 24px;
+      });
     }
     li {
       display: block;

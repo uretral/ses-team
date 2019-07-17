@@ -2,6 +2,7 @@
 <html>
 <head></head>
 <body>
+
 @if($sender->action == 'callback')
 
 <div style="display: table; width: 100%; text-align: center; height: 40px; background: #68A4C4; color: #fff; font-family: 'Open Sans', Arial, sans-serif; font-size: 14px; font-weight: bold;">
@@ -36,6 +37,11 @@
 
     <div style="display: table; width: 100%; text-align: center; height: 40px; background: #68A4C4; color: #fff; font-family: 'Open Sans', Arial, sans-serif; font-size: 14px; font-weight: bold;">
         <div style="display: table-cell; vertical-align: middle;">Сфера деятельности: {{ $sender->branch }}</div>
+    </div>
+@elseif($sender->action == 'feedback')
+
+    <div style="display: table; width: 100%; text-align: center; height: 40px; background: #68A4C4; color: #fff; font-family: 'Open Sans', Arial, sans-serif; font-size: 14px; font-weight: bold;">
+        <div style="display: table-cell; vertical-align: middle;">Подпишитесь на наши новости  {{ $sender->feedback }}!</div>
     </div>
 @endif
 </body>

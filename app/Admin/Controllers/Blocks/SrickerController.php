@@ -131,6 +131,9 @@ class SrickerController extends Controller
                 2 =>'Форма аппеляции'
             ];
             $form->textarea('intro','Интротекст');
+            $form->image('img','Изображение');
+            $form->text('table_heading','Заголовок таблицы');
+            $form->ckeditor('table','Интротекст');
             $form->ckeditor('content','Содержание');
             $form->select('form','Выбор формы')->options($options);
         });

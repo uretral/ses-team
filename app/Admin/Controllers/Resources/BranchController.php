@@ -146,10 +146,18 @@ class BranchController extends Controller
             $form->textarea('aside_advert_text', 'Текст');
             $form->text('aside_advert_link', 'Ссылка');
         });
+        $form->tab('Цены', function(Form $form){
+            $form->hasMany('prices','Цены', function ($form){
+                $form->text('name','Прайс - заголовок');
+                $form->ckeditorMany('text','Прайс');
+            });
+        });
+
         $form->tab('Дополнительно', function(Form $form){
             $form->multipleSelect('partners','Клиенты')->options(Client::all()->pluck('name','id'));
             $form->multipleSelect('articles','Статьи')->options(\App\Models\Resources\Article::all()->pluck('name','id'));
             $form->ckeditor('price','Цены');
+
             $form->ckeditor('warranty','Гарантия');
         });
 

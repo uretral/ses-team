@@ -40,7 +40,7 @@
             Позвоните нам: <span>{{REGION['phone']}}</span>
         </p>
         <p>
-            Или отправьте нам заявку, мы перезвоним Вам в течении 5ти минут:
+            Или отправьте нам заявку, мы перезвоним Вам в течение 5ти минут:
         </p>
 
         <form action="javascript:" id="aside_form">
@@ -98,7 +98,7 @@
     <p>Выберите ваш регион:</p>
     <select rel="region-links" class="simple">
         @foreach(\App\Admin\Controllers\SiteController::regions() as $region)
-            <option @if(strpos(request()->root(),$region->url)) selected @endif value="{{$region->url}}">{{$region['region']}}</option>
+            <option  @if(is_numeric(strpos(request()->getHost(),$region->url))) selected @endif value="{{$region->url}}">{{$region['region']}}</option>
         @endforeach
     </select>
     <br/>

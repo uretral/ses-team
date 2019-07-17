@@ -2,6 +2,7 @@
 
 namespace App\Models\Resources;
 
+use App\Models\HasMany\BrunchPrice;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Resources\Client;
 
@@ -65,6 +66,9 @@ class Branch extends Model
             }
         }
         return $stickerData;
+    }
+    public function prices(){
+        return $this->hasMany(BrunchPrice::class,'parent');
     }
 
     /*    public static function block($data,$b){

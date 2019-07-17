@@ -13,7 +13,7 @@
 <header>
     <div>
         <div class="header">
-            <a class="header-call-btn" href="javascript:"></a>
+            <a class="header-call-btn" href="tel:{{REGION['phone_href']}}"></a>
             <div class="header-logo">
                 <a href="{{MENU[1]['link']}}">
                     <img src="{{asset('img/logo.jpg')}}" alt="logo"/>
@@ -28,17 +28,8 @@
             <div class="header-nav">
                 <div class="header-nav-info">
                     <a href="tel:{{REGION['phone_href']}}"><span>Тел: {{REGION['phone']}}</span></a>
-{{--                    <input type="checkbox" id="regionsSwitcher"/>
-                    <label for="regionsSwitcher"><span>Регионы</span>
-                        <div class="regions-top">
-                            <div rel="region"></div>
-                            <select class="simple wider">
-                                @foreach(\App\Admin\Controllers\SiteController::regions() as $region)
-                                    <option @if(request()->root() == $region->url) selected @endif value="{{$region->url}}">{{$region['region']}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </label>--}}
+                    <a href="mailto:{{REGION['email']}}"><span>{{REGION['email']}}</span></a>
+
                     <input  type="checkbox" id="mobileSearchSwitcher"/>
                     <label for="mobileSearchSwitcher"><span>Поиск</span>
 
@@ -98,7 +89,7 @@
 	<div>
 		<div class="linker-items">
 			<div class="linker-watsapp">
-                <a title="Whatsapp" href="whatsapp://send?phone=79997167942">
+                <a title="Whatsapp" href="whatsapp://send?phone={{REGION['whatsapp']}}">
                     <img src="/img/wasend.png" alt="watsapp send"/>
                 </a>
             </div>
@@ -119,38 +110,29 @@
         <div class="footer-box">
             <div class="footer-links">
                 <div class="footer-links_media">
-                    <h5>Почему SESTEAM</h5>
+                    <h5>SESTEAM</h5>
                     <ul>
+                        <li>
+                            <a href="{{MENU[7]['link']}}"><span>{{MENU[7]['name']}}</span></a>
+                        </li>
                         <li>
                             <a href="{{MENU[26]['link']}}"><span>{{MENU[26]['name']}}</span></a>
                         </li>
                         <li>
                             <a href="{{MENU[27]['link']}}"><span>{{MENU[27]['name']}}</span></a>
                         </li>
-{{--                        <li>
-                            <a href="javascript:">Продажа Вашего Бизнеса</a>
-                        </li>--}}
                     </ul>
                 </div>
 
                 <div class="footer-links_socials">
                     <h5>Мы в соц.сетях</h5>
+
                     <ul>
-                        <li>
-                            <a rel="nofollow" href="javascript:" class="facebook" target="_blank">facebook</a>
-                        </li>
-                        <li>
-                            <a rel="nofollow" href="javascript:" class="youtube" target="_blank">youtube</a>
-                        </li>
-                        <li>
-                            <a rel="nofollow" href="javascript:" class="twitter" target="_blank">twitter</a>
-                        </li>
-                        <li>
-                            <a rel="nofollow" href="javascript:" class="pinterest" target="_blank">pinterest</a>
-                        </li>
-                        <li>
-                            <a rel="nofollow" href="javascript:" class="email" target="_blank">email</a>
-                        </li>
+                        @foreach(\App\Models\Statics\Share::all() as $item)
+                            <li>
+                                <a rel="nofollow" href="{{$item->link}}" class="{{$item->name}}" target="_blank">facebook</a>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
                 <div class="footer-links_other">
@@ -162,14 +144,11 @@
                         <li>
                             <a href="{{MENU[22]['link']}}"><span>{{MENU[22]['name']}}</span></a>
                         </li>
-{{--                        <li>
-                            <a href="javascript:">Часто задаваемые вопросы</a>
-                        </li>--}}
                     </ul>
                 </div>
             </div>
             <div class="footer-copyrights">
-                <p>© 2019 Ses Team</p>
+                <p>© {{date ( 'Y' )}} Ses Team</p>
             </div>
             <div class="footer-terms">
                 <a href="{{MENU[31]['link']}}">Условия пользования</a>
@@ -185,6 +164,7 @@
                     <a href="javascript:;" class="modal-close"></a>
                     <div class="callback-form form">
                         <form action="javascript:" id="callback">
+                            {{--FORM--}}
                             <input type="hidden" name="action" value="callback"/>
                             <input type="hidden" name="discount" value="без скидки">
                             <label><input type="hidden" name="page" value="{{request()->fullUrl()}}"/></label>

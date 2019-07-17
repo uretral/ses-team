@@ -137,8 +137,8 @@ class BusinessServiceController extends Controller
             $form->display('id');
             $form->select('parent', 'Родитель')->options(BusinessServiceCategory::all()->pluck('name','id'));
             $form->alias('alias');
-            $form->text('name','Название')->attribute('rel','alias');
-            $form->text('name_short','Название для меню');
+            $form->text('name','УТП');
+            $form->text('name_short','Название для меню')->attribute('rel','alias');
             $form->number('sort', 'Сортировка')->default(10);
             $form->switch('enabled','Активность в меню')->options($states);
         });
@@ -174,6 +174,9 @@ class BusinessServiceController extends Controller
             });
 
         });
+        $form->tab('Стикер',function (Form $form){
+            $form->switch('show_sticker', 'Показывать форму заявки на стикер');
+        });
         $form->tab('Боковая панель', function(Form $form){
             $form->html('<h4>Сноска (А вы знаете что?..). У поля текст предпочтение</h4>');
 
@@ -181,6 +184,7 @@ class BusinessServiceController extends Controller
             $form->image('aside_cite_img', 'картинка')->uniqueName();
             $form->textarea('aside_cite_text', 'Текст');
             $form->text('aside_cite_link', 'Ссылка');
+            $form->text('aside_thing', 'насекомые?');
 
             $form->html('<h4>Сноска (Реклама). У поля текст предпочтение</h4>');
             $form->switch('aside_advert_switcher', 'Включить');

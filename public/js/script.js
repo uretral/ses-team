@@ -17,7 +17,11 @@ $(document).scroll(function(){
 
 $(document).ready(function(){
 
-
+    $(document).on('click','.root',function(e){
+        $('.sub-menu').hide();
+        $(this).find('.sub-menu').show();
+        e.stopPropagation();
+    });
     $(document).on('change','[rel="region-links"]',function(){
         location.href = 'http://'+$(this).val()
 
@@ -38,11 +42,7 @@ $(document).ready(function(){
 
 
 
-    $(document).on('click','.root',function(e){
-        $('.sub-menu').hide();
-        $(this).find('.sub-menu').show();
-        e.stopPropagation();
-    });
+
     $(document).on('click','body',function(){
         $('.sub-menu').hide();
     });
@@ -107,6 +107,26 @@ $(document).ready(function(){
             },
         });
     });
+
+    $('#feedback').on('submit', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '/sendmail',
+            data: $('#feedback').serialize(),
+            success: function(data){
+                console.log(data);
+                $(document).find('#feedback').html('<p>Ваша заявка успешно отправлена, мы свяжемся с вами в ближайшее время </p>');
+            },
+            error: function (jqXHR, exception) {
+                $(document).find('#feedback').html('<p>Извините, произошла ошибка - попробуйте обновить страницу  </p>');
+
+            },
+        });
+
+
+
+    });
 });
 
 $(document).on('click','.modal-close',function(){
@@ -127,7 +147,7 @@ $(document).on('click','[rel="modal"]',function(){
 
 
 });
-
+/*
 function getTimeRemaining(endtime) {
     var t = Date.parse(endtime) - Date.parse(new Date());
     var seconds = Math.floor((t / 1000) % 60);
@@ -172,6 +192,7 @@ var deadline="January 01 2018 00:00:00 GMT+0300"; //for Ukraine
 var deadline = new Date(Date.parse(new Date()) + 15  * 60 * 1000); // for endless timer
 
 initializeClock('clock', deadline);
+*/
 
 $(".carousel").owlCarousel({
     items:             3,
